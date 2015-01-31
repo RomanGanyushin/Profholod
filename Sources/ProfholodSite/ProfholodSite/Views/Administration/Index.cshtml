@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Администрация</h2>
+
+<li>@Html.ActionLink("Справочник периодов", "Index", "Periodicals")</li>
+<li>@Html.ActionLink("Справочник состояний регламентных работ", "Index", "MaintenaceStates")</li>
+<li>@Html.ActionLink("Справочник типовых действий", "Index", "MaintenaceActions")</li>
+<li>@Html.ActionLink("Справочник групп деталей и узлов", "Index", "MachineObjectGroups")</li>
+<li>@Html.ActionLink("Справочник индекса аварийности", "Index", "FaultIndexes")</li>
+<li>@Html.ActionLink("Справочник неисправностей", "Index", "TypeOfFaults")</li>
+
+<li></li>
+
+<li>@Html.ActionLink("Оборудование предприятия", "Index", "MachineObjects")</li>
+<li>@Html.ActionLink("Список регламентных работ", "Index", "MaintenacesObjects")</li>
+

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    @Scripts.Render("~/scripts/jquery-2.1.1.js")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/themes/base/all.css")
+    @Scripts.Render("~/scripts/jquery-ui-1.11.2.js")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/globalization/globalize.js"></script>
+    <script src="~/Scripts/globalization/globalize.culture.ru-RU.js"></script>
+    @Scripts.Render("~/Scripts/jqx-all.js")
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Профхолод", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+               
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                   
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Электромеханическая Служба ООО "Профхолод"</p>
+        </footer>
+    </div>
+
+    @RenderSection("scripts", required: false)
+
+  
+</body>
+</html>

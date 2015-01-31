@@ -1,0 +1,75 @@
+﻿
+
+ <div id="treeGrid"></div>
+
+<script>
+
+
+            var source =
+
+            {
+
+                dataType: "json",
+
+                dataFields: [
+
+                    { name: 'Id', type: 'number' },
+
+                    { name: 'ParentId', type: 'number' },
+
+                    { name: 'Text', type: 'string' }
+                ],
+
+                hierarchy:
+
+                {
+
+                    keyDataField: { name: 'Id' },
+
+                    parentDataField: { name: 'ParentId' }
+
+                },
+
+                id: 'Id',
+
+                url: 'GetDataJson'
+
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            // create Tree Grid
+
+            $("#treeGrid").jqxTreeGrid(
+
+            {
+
+                width: 850,
+
+                source: dataAdapter,
+
+                sortable: true,
+
+                ready: function()
+
+                {
+
+                    $("#treeGrid").jqxTreeGrid();
+
+                },
+
+                columns: [
+
+                  { text: 'Id', dataField: 'Id', width: 200 },
+                  { text: 'Text', dataField: 'Text', width: 200 },
+                  { text: 'ParentId', dataField: 'ParentId', width: 200 }
+                ]
+
+            });
+
+   
+
+    </script>
+
+
+

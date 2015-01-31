@@ -1,0 +1,106 @@
+﻿@model ProfHolodSite.Models.ComplitedRepairReport
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ComplitedRepairReport</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MachineObject.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MachineObject.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaintenaceAction.Caption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaintenaceAction.Caption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeOfFault.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeOfFault.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeEnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifyUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifyUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifyDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifyDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

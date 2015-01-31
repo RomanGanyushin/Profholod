@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ProfHolodSite.Models.PerformNoteRepair>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Черновик отчета</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RepairObjectText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeOfFaultText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RepairActionText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RepairObjectText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeOfFaultText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RepairActionText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsCompleted)
+        </td>
+        
+        @if (ViewBag.AccessType == "Administrator" || ((ViewBag.CurrentUser == item.CreateUserName)))
+        {
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        }
+    </tr>
+}
+
+</table>

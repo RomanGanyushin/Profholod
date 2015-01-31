@@ -1,0 +1,42 @@
+﻿@model ProfHolodSite.Models.Periodical
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Periodical</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Time_period_sec)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Time_period_sec)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LCode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

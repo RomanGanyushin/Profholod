@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ProfHolodSite.Models.MachineObjectGroup>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Список групп деталей и узлов</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.GroupName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.GroupName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        @if (ViewBag.AccessType == "Administrator" || ViewBag.CurrentUser == item.CreateUserName)
+        {
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        }
+    </tr>
+}
+
+</table>

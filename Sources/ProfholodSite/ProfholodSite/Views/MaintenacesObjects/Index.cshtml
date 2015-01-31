@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ProfHolodSite.Models.MaintenacesObject>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Список регламентных работ</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineObject.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaintenaceAction.Caption)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaintenaceState.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Periodical.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MachineObject.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaintenaceAction.Caption)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaintenaceState.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Periodical.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+       
+        @if (ViewBag.AccessType == "Administrator" || ((ViewBag.CurrentUser == item.CreateUserName) && (item.MaintenaceStateID==1)))
+        {
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        }
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>

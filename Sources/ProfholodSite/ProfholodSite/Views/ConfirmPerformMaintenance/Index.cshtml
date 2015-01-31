@@ -1,0 +1,50 @@
+﻿
+
+@model IEnumerable<ProfHolodSite.Models.PerformMaintenanceReport>
+
+<h2>Утвердить список выполненных регламентных работ</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MaintenacesObject.Description)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportText)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaintenacesObject.Description)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportText)
+        </td>
+        <td>
+            @Html.ActionLink("Утвердить", "Confirm", new { id=item.Id })
+        </td>
+       
+    </tr>
+}
+
+</table>
+

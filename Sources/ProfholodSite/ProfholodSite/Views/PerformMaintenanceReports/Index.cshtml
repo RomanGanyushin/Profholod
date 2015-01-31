@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ProfHolodSite.Models.PerformMaintenanceReport>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MaintenacesObject.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeEnd)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.ReportText)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaintenacesObject.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeEnd)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportText)
+        </td>
+    
+        @if (ViewBag.AccessType == "Administrator" || ViewBag.AccessType == "Chef" || ((ViewBag.CurrentUser == item.CreateUserName)))
+        {
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
+        }
+    </tr>
+}
+
+</table>

@@ -1,0 +1,82 @@
+﻿@model ProfHolodSite.Models.PerformNoteRepair
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Удалить</h2>
+
+
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeEnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RepairObjectText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepairObjectText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeOfFaultText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeOfFaultText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RepairActionText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepairActionText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+
+       
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("Вернуться к списку", "Index")
+        </div>
+    }
+</div>
