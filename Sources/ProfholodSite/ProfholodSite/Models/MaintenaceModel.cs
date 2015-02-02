@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 
 namespace ProfHolodSite.Models
 {
@@ -366,6 +369,17 @@ namespace ProfHolodSite.Models
 
     public class MachineObjectContext : DbContext
         {
+        public MachineObjectContext()
+            : base("DefaultConnection")
+        {
+            
+        }
+
+        public static MachineObjectContext Create()
+        {
+            return new MachineObjectContext();
+        }
+
             public DbSet<Periodical> Periodicals { get; set; }
             public DbSet<MachineObjectGroup> MachineObjectGroups { get; set; }
             public DbSet<MaintenaceState> MaintenaceStates { get; set; }

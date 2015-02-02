@@ -13,7 +13,7 @@ namespace ProfholodSite.Controllers
 
         public ActionResult Index()
         {
-            if (User.Identity.Name == "")
+           if (User.Identity.Name == "")
             {
                 return RedirectToAction("Login", "Account" ,routeValues: null);
             }
