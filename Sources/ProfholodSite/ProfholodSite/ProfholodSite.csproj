@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp.5.5.4\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -181,9 +184,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BinaryContentResult.cs" />
+    <Compile Include="Models\HtmlViewRenderer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MaintenaceModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\StandardPdfRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -744,6 +750,7 @@
     <Content Include="Views\ComplitedRepairReports\Edit.cshtml" />
     <Content Include="Views\ComplitedRepairReports\Index.cshtml" />
     <Content Include="Views\MachineObjects\TreeView.cshtml" />
+    <Content Include="Views\MaintenaceActions\ReportHtml.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
