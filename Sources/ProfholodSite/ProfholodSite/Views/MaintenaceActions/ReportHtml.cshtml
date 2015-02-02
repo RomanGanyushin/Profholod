@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ProfHolodSite.Models.MaintenaceAction>
+
+    <table class="table">
+        <tr border="1" bgcolor="#777777" color="#ffffff">
+            <th>
+                @Html.DisplayNameFor(model => model.Caption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+        </tr>
+
+        @{
+            var OddColor = "#DDEEEE";
+            var evenColor = "#EEFFFF";
+            var Odd = OddColor;
+        }
+
+
+        @foreach (var item in Model)
+        {
+            <tr border="1" bgcolor="@Odd">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+            </tr>
+
+            if (Odd == OddColor)
+            {
+                Odd = evenColor;
+            }
+            else
+            {
+                Odd = OddColor;
+            }
+
+        }
+
+    </table>
+
+ 
