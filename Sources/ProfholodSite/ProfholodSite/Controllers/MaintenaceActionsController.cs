@@ -8,6 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using ProfHolodSite.Models;
 
+using System.Text; 
+using System.Web; 
+using System;
+
+
 namespace ProfholodSite.Controllers
 {
     public class MaintenaceActionsController : Controller
@@ -153,6 +158,27 @@ namespace ProfholodSite.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult ReportHtml()
+        {
+        
+            return View(db.MaintenaceActions.ToList());
+        }
+
+        public ActionResult Report()
+        {
+            
+           // MaintenaceAction maintenaceAction = 
+            var model = db.MaintenaceActions.ToList();
+            string text = new ReportManagement.HtmlViewRenderer().RenderViewToString(this, "ReportHtml", model);
+            byte[] buffer = new ReportManagement.StandardPdfRenderer().Render(text, "Testing");
+
+            // Return the PDF as a binary stream to the client.
+            return new  ReportManagement.BinaryContentResult(buffer, "application/pdf");
+           
+           // return Content("", "application/pdf", Encoding.Default);
+           
         }
     }
 }

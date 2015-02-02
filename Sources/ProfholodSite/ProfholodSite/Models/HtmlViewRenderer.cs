@@ -43,5 +43,10 @@ namespace ReportManagement
             return renderedView.ToString();
         }
 
+        private static ViewContext CreateViewContext(TextWriter responseWriter, ControllerContext fakeControllerContext)
+        {
+            return new ViewContext(fakeControllerContext, new FakeView(), new ViewDataDictionary(), new TempDataDictionary(), responseWriter);
+        }
+
     }
 }
