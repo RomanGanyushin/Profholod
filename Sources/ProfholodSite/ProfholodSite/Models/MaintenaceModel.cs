@@ -365,6 +365,8 @@ namespace ProfHolodSite.Models
         public virtual MaintenaceAction MaintenaceAction { get; set; }
         public virtual MachineObject MachineObject { get; set; }
         public virtual TypeOfFault TypeOfFault { get; set; }
+
+        public static string TableName() { return "отчет о выполненной работе";}
     }
 
     public class MachineObjectContext : DbContext

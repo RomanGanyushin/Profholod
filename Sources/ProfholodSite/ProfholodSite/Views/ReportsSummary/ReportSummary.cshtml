@@ -1,0 +1,57 @@
+﻿@model IList<ProfHolodSite.Models.AnyOperation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Date)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Times)
+        </th>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Object)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Action)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Reason)
+        </th>
+
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Times)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Object)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+
+            
+        </tr>
+    }
+
+</table>

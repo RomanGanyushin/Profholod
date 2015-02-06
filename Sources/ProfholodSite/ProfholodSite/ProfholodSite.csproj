@@ -179,6 +179,7 @@
     <Compile Include="Controllers\PerformMaintenanceReportsController.cs" />
     <Compile Include="Controllers\PerformNoteRepairsController.cs" />
     <Compile Include="Controllers\PeriodicalsController.cs" />
+    <Compile Include="Controllers\ReportsSummaryController.cs" />
     <Compile Include="Controllers\TypeOfFaultsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -188,6 +189,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MaintenaceModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Reports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -749,6 +751,7 @@
     <Content Include="Views\ComplitedRepairReports\Index.cshtml" />
     <Content Include="Views\MachineObjects\TreeView.cshtml" />
     <Content Include="Views\MaintenaceActions\ReportHtml.cshtml" />
+    <Content Include="Views\ReportsSummary\ReportSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

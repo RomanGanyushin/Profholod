@@ -162,6 +162,7 @@ namespace ProfholodSite.Controllers
 
         public ActionResult ReportHtml()
         {
+           
         
             return View(db.MaintenaceActions.ToList());
         }
