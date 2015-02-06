@@ -16,6 +16,7 @@ namespace ProfholodSite.Controllers
             PerformOperationsSummary summary = new PerformOperationsSummary();
             var report = summary.CreatePerformReport();
 
+            ViewBag.isFull = false;
             return View("ReportSummary", report);
         }
 	}

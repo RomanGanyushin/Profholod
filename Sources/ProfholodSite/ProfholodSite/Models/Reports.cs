@@ -14,8 +14,10 @@ using ProfHolodSite.Models;
 
 namespace ProfHolodSite.Models
 {
+
     public class AnyOperation
-    { 
+    {
+       [Display(Name = "Источник записи")]
         public string OperationReportSource {get;set;}
         public Int32 NativeID { get; set; }
          
@@ -32,8 +34,12 @@ namespace ProfHolodSite.Models
         [Display(Name = "Причина")]
         public string Reason { get; set; }
         public Int32 ReasonNativeID { get; set; }
-        
+
+        [Display(Name = "Отчет по работе")]
         public string ReportText { get; set; }
+
+        [Display(Name = "Запись сделал")]
+        public string RecordAuthorText { get; set; }
 
         [Display(Name = "Дата")]
         [DataType(DataType.Date)]
@@ -45,9 +51,17 @@ namespace ProfHolodSite.Models
         { get { return StartDateTime.ToString("H:mm") + "-" + EndDateTime.ToString("H:mm"); } }
 
     }
+
+    
+
     public class PerformOperationsSummary
     {
         private MachineObjectContext db = new MachineObjectContext();
+        private string ConvertUserToString(string user)
+        {
+            return db.StaffPersons
+                .Where(p => p.UserName == user).First().Surname;
+        }
         public IList<AnyOperation> CreatePerformReport( /*DateTime From, DateTime To*/)
         {
             List<AnyOperation> result = new List<AnyOperation>();
@@ -62,7 +76,7 @@ namespace ProfHolodSite.Models
             {
                 result.Add(new AnyOperation()
                 {
-                    OperationReportSource = ComplitedRepairReport.TableName(),
+                    OperationReportSource = "отчет о ремонтных работах",
                     NativeID = complite_repair.Id,
                     Object = complite_repair.MachineObject.Name,
                     ObjectNativeID = complite_repair.MachineObject.Id,
@@ -72,16 +86,18 @@ namespace ProfHolodSite.Models
                     EndDateTime = complite_repair.DateTimeEnd,
                     Reason = complite_repair.TypeOfFault.Name,
                     ReasonNativeID = complite_repair.TypeOfFault.Id,
-                    ReportText = complite_repair.ReportText
-
+                    ReportText = complite_repair.ReportText,
+                    RecordAuthorText = ConvertUserToString(complite_repair.CreateUserName)
                 });          
             }
 
+            
+
             foreach (PerformNoteRepair note_repair in db.PerformNoteRepairs.ToList())
             {
                 result.Add(new AnyOperation()
                 {
-                    OperationReportSource = ComplitedRepairReport.TableName(),
+                    OperationReportSource = "записки о ремнонтных работах",
                     NativeID = note_repair.Id,
                     Object = note_repair.RepairObjectText,
                     ObjectNativeID = -1,
@@ -91,26 +107,8 @@ namespace ProfHolodSite.Models
                     EndDateTime = note_repair.DateTimeEnd,
                     Reason = note_repair.TypeOfFaultText,
                     ReasonNativeID = -1,
-                    ReportText = note_repair.ReportText
-
-                });
-            }
-
-            foreach (PerformNoteRepair note_repair in db.PerformNoteRepairs.ToList())
-            {
-                result.Add(new AnyOperation()
-                {
-                    OperationReportSource = ComplitedRepairReport.TableName(),
-                    NativeID = note_repair.Id,
-                    Object = note_repair.RepairObjectText,
-                    ObjectNativeID = -1,
-                    Action = note_repair.RepairActionText,
-                    ActionNativeID = -1,
-                    StartDateTime = note_repair.DateTimeStart,
-                    EndDateTime = note_repair.DateTimeEnd,
-                    Reason = note_repair.TypeOfFaultText,
-                    ReasonNativeID = -1,
-                    ReportText = note_repair.ReportText
+                    ReportText = note_repair.ReportText,
+                    RecordAuthorText = ConvertUserToString(note_repair.CreateUserName)
 
                 });
             }
@@ -123,7 +121,7 @@ namespace ProfHolodSite.Models
             {
                 result.Add(new AnyOperation()
                 {
-                    OperationReportSource = ComplitedRepairReport.TableName(),
+                    OperationReportSource = "отчет регламентых работ",
                     NativeID = maintenace.Id,
                     Object = maintenace.MaintenacesObject.MachineObject.Name,
                     ObjectNativeID = maintenace.MaintenacesObject.MachineObject.Id,
@@ -133,7 +131,8 @@ namespace ProfHolodSite.Models
                     EndDateTime = maintenace.DateTimeEnd,
                     Reason = "Регламентная работа",
                     ReasonNativeID = -1,
-                    ReportText = maintenace.ReportText
+                    ReportText = maintenace.ReportText,
+                    RecordAuthorText = ConvertUserToString(maintenace.CreateUserName)
 
                 });
             }

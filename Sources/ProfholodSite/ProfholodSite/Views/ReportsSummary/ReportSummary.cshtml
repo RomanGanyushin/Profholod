@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<table class="table">
+<table class="table" border="1">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Date)
@@ -18,40 +18,72 @@
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Object)
         </th>
+
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Action)
         </th>
+
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Reason)
         </th>
 
+       @if (ViewBag.isFull)
+       { 
+         <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ReportText)
+        </th>
+           <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().RecordAuthorText)
+        </th>
+            <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().OperationReportSource)
+        </th>
+       }
 
-        <th></th>
     </tr>
 
+    @{var prevdate = new DateTime();}
+
     @foreach (var item in Model)
-    {
-        <tr>
-            <td>
+{
+    <tr >
+        <td>
+            @if (item.Date.Date != prevdate)
+            {
                 @Html.DisplayFor(modelItem => item.Date)
-            </td>
+            }
+        </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Times)
-            </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Times)
+        </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Object)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Action)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reason)
-            </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Object)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Action)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reason)
+        </td>
 
-            
-        </tr>
-    }
+        @if (ViewBag.isFull)
+        {
+            <th>
+                @Html.DisplayFor(modelItem => item.ReportText)
+            </th>
+             <th>
+                @Html.DisplayFor(modelItem => item.RecordAuthorText)
+            </th>
+             <th>
+                @Html.DisplayFor(modelItem => item.OperationReportSource)
+            </th>
+        }
+
+    </tr>
+
+            prevdate = item.Date.Date;
+}
 
 </table>

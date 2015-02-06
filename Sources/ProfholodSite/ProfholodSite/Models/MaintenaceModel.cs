@@ -233,7 +233,6 @@ namespace ProfHolodSite.Models
 
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
-
     }
 
     public class FaultIndex
@@ -321,6 +320,7 @@ namespace ProfHolodSite.Models
 
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
+
     }
 
     public class ComplitedRepairReport
@@ -366,7 +366,6 @@ namespace ProfHolodSite.Models
         public virtual MachineObject MachineObject { get; set; }
         public virtual TypeOfFault TypeOfFault { get; set; }
 
-        public static string TableName() { return "отчет о выполненной работе";}
     }
 
     public class MachineObjectContext : DbContext
