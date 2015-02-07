@@ -62,11 +62,13 @@ namespace ProfHolodSite.Models
             return db.StaffPersons
                 .Where(p => p.UserName == user).First().Surname;
         }
-        public IList<AnyOperation> CreatePerformReport( /*DateTime From, DateTime To*/)
+        public void  CreatePerformReport(DateTime From, DateTime To)
         {
-            List<AnyOperation> result = new List<AnyOperation>();
+             content = new List<AnyOperation>();
 
             var complitedRepairReports = db.ComplitedRepairReports.
+                Where(c => c.DateTimeStart >= From).
+                Where(c => c.DateTimeStart <= To).
                 Include(c => c.MachineObject).
                 Include(c => c.MaintenaceAction).
                 Include(c => c.TypeOfFault);
@@ -74,7 +76,7 @@ namespace ProfHolodSite.Models
 
             foreach (ComplitedRepairReport complite_repair in complitedRepairReports.ToList())
             {
-                result.Add(new AnyOperation()
+                content.Add(new AnyOperation()
                 {
                     OperationReportSource = "отчет о ремонтных работах",
                     NativeID = complite_repair.Id,
@@ -91,11 +93,14 @@ namespace ProfHolodSite.Models
                 });          
             }
 
-            
 
-            foreach (PerformNoteRepair note_repair in db.PerformNoteRepairs.ToList())
+            var performNoteRepairs = db.PerformNoteRepairs.
+               Where(c => c.DateTimeStart >= From).
+               Where(c => c.DateTimeStart <= To);
+
+            foreach (PerformNoteRepair note_repair in performNoteRepairs.ToList())
             {
-                result.Add(new AnyOperation()
+                content.Add(new AnyOperation()
                 {
                     OperationReportSource = "записки о ремнонтных работах",
                     NativeID = note_repair.Id,
@@ -114,12 +119,14 @@ namespace ProfHolodSite.Models
             }
 
             var performMaintenanceReports = db.PerformMaintenanceReports.Include(p => p.MaintenacesObject)
-                .Where(p => p.IsConfirm == true);
+                .Where(p => p.IsConfirm == true).
+                 Where(c => c.DateTimeStart >= From).
+                 Where(c => c.DateTimeStart <= To);
 
 
             foreach (PerformMaintenanceReport maintenace in performMaintenanceReports.ToList())
             {
-                result.Add(new AnyOperation()
+                content.Add(new AnyOperation()
                 {
                     OperationReportSource = "отчет регламентых работ",
                     NativeID = maintenace.Id,
@@ -138,12 +145,15 @@ namespace ProfHolodSite.Models
             }
 
 
-            result.Sort(delegate(AnyOperation op1, AnyOperation op2)
+            content.Sort(delegate(AnyOperation op1, AnyOperation op2)
             { return op1.StartDateTime.CompareTo(op2.StartDateTime); });
 
-            return result;
+           
         }
-    
+
+        public bool isFull { get; set; }
+        public List<AnyOperation> content;
     }
 
+   
 }

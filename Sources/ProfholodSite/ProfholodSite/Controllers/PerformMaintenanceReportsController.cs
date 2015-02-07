@@ -40,7 +40,7 @@ namespace ProfholodSite.Controllers
             ViewBag.MaintenacesObjectId = new SelectList(db.MaintenacesObjects, "Id", "Description");
 
             PerformMaintenanceReport obj = new PerformMaintenanceReport();
-            obj.DateTimeEnd = obj.DateTimeStart = new MyLocalResource().GetCurrentTime();
+            obj.DateTimeEnd = obj.DateTimeStart = new MDTime().GetCurrentTime();
          
             return View(obj);
         }
@@ -64,7 +64,7 @@ namespace ProfholodSite.Controllers
              performMaintenanceReport.ModifyUserName = User.Identity.Name;
 
             performMaintenanceReport.CreateDate =
-                 performMaintenanceReport.ModifyDate = new MyLocalResource().GetCurrentTime();
+                 performMaintenanceReport.ModifyDate = new MDTime().GetCurrentTime();
 
             performMaintenanceReport.IsConfirm = false;
 
@@ -125,7 +125,7 @@ namespace ProfholodSite.Controllers
            
 
             performMaintenanceReport.ModifyUserName = User.Identity.Name;
-            performMaintenanceReport.ModifyDate = new MyLocalResource().GetCurrentTime();
+            performMaintenanceReport.ModifyDate = new MDTime().GetCurrentTime();
             performMaintenanceReport.IsConfirm = false;
 
 

@@ -89,7 +89,7 @@ namespace ProfholodSite.Controllers
             if (access_type != "Administrator" && access_type != "Chef" && access_type != "Specialist") throw new Exception("Access not denid");
 
             PerformMaintenanceReport obj = new PerformMaintenanceReport();
-            obj.DateTimeEnd = obj.DateTimeStart = new MyLocalResource().GetCurrentTime();
+            obj.DateTimeEnd = obj.DateTimeStart = new MDTime().GetCurrentTime();
             obj.MaintenacesObjectId = maintenacesObject.Id;
             obj.MaintenacesObject = maintenacesObject;
             ViewBag.MaintenanceDescription = maintenacesObject.Description;
@@ -111,7 +111,7 @@ namespace ProfholodSite.Controllers
              performMaintenanceReport.ModifyUserName = User.Identity.Name;
 
             performMaintenanceReport.CreateDate =
-                 performMaintenanceReport.ModifyDate = new MyLocalResource().GetCurrentTime();
+                 performMaintenanceReport.ModifyDate = new MDTime().GetCurrentTime();
 
             performMaintenanceReport.IsConfirm = false;
 

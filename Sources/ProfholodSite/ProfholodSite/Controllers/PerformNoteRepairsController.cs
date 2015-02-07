@@ -32,7 +32,7 @@ namespace ProfholodSite.Controllers
 
             PerformNoteRepair performNoteRepair = new PerformNoteRepair();
             performNoteRepair.DateTimeStart =
-                performNoteRepair.DateTimeEnd = new MyLocalResource().GetCurrentTime();
+                performNoteRepair.DateTimeEnd = new MDTime().GetCurrentTime();
 
             return View(performNoteRepair);
         }

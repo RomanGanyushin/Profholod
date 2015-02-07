@@ -37,7 +37,7 @@ namespace ProfholodSite.Controllers
 
             ComplitedRepairReport complitedRepairReport = new ComplitedRepairReport();
             complitedRepairReport.DateTimeStart =
-                complitedRepairReport.DateTimeEnd = new MyLocalResource().GetCurrentTime();
+                complitedRepairReport.DateTimeEnd = new MDTime().GetCurrentTime();
 
             return View(complitedRepairReport);
         }

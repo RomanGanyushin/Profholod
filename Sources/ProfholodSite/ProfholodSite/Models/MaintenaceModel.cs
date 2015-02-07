@@ -11,11 +11,21 @@ using System.Threading.Tasks;
 
 namespace ProfHolodSite.Models
 {
-    public class MyLocalResource
+    public class MDTime
       {
         public DateTime GetCurrentTime()
         { return DateTime.Now.AddHours(3); }
-      }
+    
+        public DateTime GetStartRange(int Month, int Year)
+        {
+           return new DateTime(Year, Month, 1);
+        }
+        public DateTime GetEndRange(int Month, int Year)
+        {
+            return new DateTime(Year, Month, 1).AddMonths(1);
+        }
+    }
+    
 
 
 

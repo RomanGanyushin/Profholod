@@ -13,6 +13,7 @@
             <li><a href="#tabs-2">На утверждение</a></li>
             <li><a href="#tabs-3">Формировать задание</a></li>
             <li><a href="#tabs-4">Отчеты</a></li>
+            <li><a href="#tabs-5">Документы</a></li>
 }
 else
 {
@@ -49,6 +50,10 @@ else
         <div id="tabs-4">
             <li>@Html.ActionLink("Черновик отчета", "Index", "PerformNoteRepairs")</li>
             <li>@Html.ActionLink("Отчет о работе", "Index", "ComplitedRepairReports")</li>
+        </div>
+        
+         <div id="tabs-5">
+            <li>@Html.ActionLink("Общий отчет о выпоненных работах", "Index", "ReportsSummary")</li> 
         </div>
 }
 else

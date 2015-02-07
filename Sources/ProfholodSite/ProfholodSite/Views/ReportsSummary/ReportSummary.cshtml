@@ -1,42 +1,43 @@
-﻿@model IList<ProfHolodSite.Models.AnyOperation>
+﻿@model ProfHolodSite.Models.PerformOperationsSummary
 
 @{
     ViewBag.Title = "Index";
 }
+               
 
 <table class="table" border="1">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Date)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Date)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Times)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Times)
         </th>
 
 
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Object)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Object)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Action)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Action)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Reason)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Reason)
         </th>
 
-       @if (ViewBag.isFull)
+       @if (Model.isFull)
        { 
          <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().ReportText)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().ReportText)
         </th>
            <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().RecordAuthorText)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().RecordAuthorText)
         </th>
             <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().OperationReportSource)
+            @Html.DisplayNameFor(model => model.content.FirstOrDefault().OperationReportSource)
         </th>
        }
 
@@ -44,7 +45,7 @@
 
     @{var prevdate = new DateTime();}
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.content)
 {
     <tr >
         <td>
@@ -68,7 +69,7 @@
             @Html.DisplayFor(modelItem => item.Reason)
         </td>
 
-        @if (ViewBag.isFull)
+        @if (Model.isFull)
         {
             <th>
                 @Html.DisplayFor(modelItem => item.ReportText)
