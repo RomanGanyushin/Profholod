@@ -1,0 +1,111 @@
+﻿
+<h4>
+    <table>
+        <tr>
+            <td>Вид отчета</td>
+            <td><div style='margin-left: 20px;' id='SelectDocumentType'> </div></td>
+            <td><input style='margin-left: 3px;' type="submit" value="Показать" id='CreateReport' /></td>
+            <td><a ref='' style='margin-left: 20px;' id='PDFReport'>Документ PDF</a></td>
+
+        </tr>
+    </table>
+    <br>
+
+
+    <table id='SelectMonthYear' style='margin-left: 40px;'>
+        <tr>
+            <td>Отчетный месяц</td>
+            <td><div id='MonthYearInput' style='margin-left: 20px;'></div></td>
+        </tr>
+    </table>
+
+
+</h4>
+<hr>
+
+<div id="report">
+
+</div>
+
+   
+
+   
+
+        <script type="text/javascript">
+           
+            function OnChangeReportType (iType)
+            {
+                $("#SelectMonthYear").hide();
+                switch (iType)
+                {
+                    case 0:
+                        $("#SelectMonthYear").show();
+                        $("#CreateReport").on('click', function () {
+                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
+                            $.ajax({
+                                url: '@Url.Action("_ReportSummary", "ReportsSummary")',
+                                async: false,
+                                cache: false,
+                                data: ({ Month: 1+getDate.getMonth(), Year: 1900+getDate.getYear(), bFull: true }),
+                                success: function (data) {
+                                     $('#report').html(data);
+                                   
+                                }
+                            });
+
+                        });
+                        $("#PDFReport").on('click', function () {
+                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');                         
+                            $("#PDFReport").attr('href', "_ReportSummaryPDF?Month="+
+                                (1+getDate.getMonth())+"&Year="+
+                                 (1900+getDate.getYear())+"&bFull=true");
+
+                            alert($("#PDFReport").attr('href'));
+                        });
+                    break;
+
+                }
+            }
+
+            $(document).ready(function () {
+
+                var source = [
+
+                             "Общий отчет о проделанной работе",
+
+                             "Starts with(Case Sensitive)"
+
+
+                ];
+              
+                $("#SelectMonthYear").hide();
+
+                $("#CreateReport").jqxButton({ width: '150' });
+                $("#PDFReport").jqxButton({ width: '150' });
+              
+              
+                $("#MonthYearInput").jqxDateTimeInput({ formatString: 'Y' , culture: 'ru-RU'});
+                
+                
+
+                $("#SelectDocumentType").jqxDropDownList({ source: source, selectedIndex: 0,  width:'auto' });
+                $('#SelectDocumentType').on('select', function (event) {
+                
+                    var index = event.args.index;
+                    OnChangeReportType(index);
+                    
+                });
+
+                OnChangeReportType(0);
+
+            
+                
+              
+
+            });
+
+
+            
+
+        </script>
+
