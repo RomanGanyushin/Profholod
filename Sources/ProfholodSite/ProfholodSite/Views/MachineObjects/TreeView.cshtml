@@ -15,9 +15,9 @@
 
                     { name: 'Id', type: 'number' },
 
-                    { name: 'ParentId', type: 'number' },
+                    { name: 'ParentObjectId', type: 'number' },
 
-                    { name: 'Text', type: 'string' }
+                    { name: 'Name', type: 'string' }
                 ],
 
                 hierarchy:
@@ -26,7 +26,7 @@
 
                     keyDataField: { name: 'Id' },
 
-                    parentDataField: { name: 'ParentId' }
+                    parentDataField: { name: 'ParentObjectId' }
 
                 },
 
@@ -61,8 +61,8 @@
                 columns: [
 
                   { text: 'Id', dataField: 'Id', width: 200 },
-                  { text: 'Text', dataField: 'Text', width: 200 },
-                  { text: 'ParentId', dataField: 'ParentId', width: 200 }
+                  { text: 'Name', dataField: 'Name', width: 200 },
+                  { text: 'ParentObjectId', dataField: 'ParentObjectId', width: 200 }
                 ]
 
             });

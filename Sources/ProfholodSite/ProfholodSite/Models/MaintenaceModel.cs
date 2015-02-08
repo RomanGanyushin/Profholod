@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
+using System.Web.Script.Serialization;
 
 namespace ProfHolodSite.Models
 {
@@ -85,10 +85,18 @@ namespace ProfHolodSite.Models
 
     public class MachineObject
     {
+        public class MachineObjectData
+        {
+            public Int32 Id { get; set; }
+            public Int32 ParentObjectId { get; set; }
+            public string Name { get; set; }
+        }
+
         public Int32 Id { get; set; }
 
         [Display(Name = "Компонент объекта")]
-        public Int32 ParentObjectId { get; set; }  
+        public Int32 ParentObjectId { get; set; }
+    
         public virtual MachineObject ParentObject { get; set; }
 
         [Display(Name = "Группа")]
@@ -103,12 +111,12 @@ namespace ProfHolodSite.Models
 
         public virtual ICollection<MaintenacesObject> MaintenacesObjects { get; set; }
         public virtual ICollection<MachineObject> ParentObjects { get; set; }
-
         public string CreateUserName { get; set; } // Author of record
         public string ModifyUserName { get; set; } // Author of modify
-
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
+
+       //
     }
 
    
@@ -165,6 +173,7 @@ namespace ProfHolodSite.Models
         public virtual Periodical Periodical { get; set; }
         public virtual MaintenaceState MaintenaceState { get; set; }
 
+        
         public virtual ICollection<PerformMaintenanceReport> PerformMaintenanceReports { get; set; }
 
         public string CreateUserName { get; set; } // Author of record

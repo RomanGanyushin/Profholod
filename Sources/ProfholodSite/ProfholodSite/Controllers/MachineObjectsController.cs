@@ -31,20 +31,22 @@ namespace ProfholodSite.Controllers
 
         public class ListItem {
             public Int32 Id { set; get; }
-            public Int32 ParentId { set; get; }
-            public  string Text { set; get; }
+            public Int32 ParentObjectId { set; get; }
+            public  string Name { set; get; }
         };
 
         public JsonResult GetDataJson()
         {
          
-            var list = new List<ListItem>();
+            var list = new List<MachineObject>();
             var machineObjects = db.MachineObjects.Include(m => m.MachineObjectGroup).Include(m => m.ParentObject);
             foreach (MachineObject m in machineObjects.ToList())
             {
-                ListItem l = new ListItem() { Text = m.Name, Id = m.Id, ParentId = m.ParentObjectId };
-                if (l.Id == l.ParentId) l.ParentId = 0;
-                list.Add(l);
+               
+                ListItem a = new ListItem() { Id = m.Id, Name = m.Name, ParentObjectId = m.ParentObjectId };
+                
+                if (m.Id == m.ParentObjectId) m.ParentObjectId = 0;
+                list.Add(m);
             }
             return Json(list, JsonRequestBehavior.AllowGet);
         }
@@ -53,7 +55,7 @@ namespace ProfholodSite.Controllers
 
     // GET: MachineObjects/Create
     public ActionResult Create()
-        {
+        {       
             if (User.Identity.Name == "") throw new Exception("Access not denid");
 
             ViewBag.MachineObjectGroupId = new SelectList(db.MachineObjectGroups, "Id", "GroupName");
