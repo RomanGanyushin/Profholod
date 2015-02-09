@@ -44,7 +44,10 @@ namespace ProfholodSite.Controllers
             foreach (var file in fileUpload)
             {
                 if (file == null) continue;
-                string path = AppDomain.CurrentDomain.BaseDirectory + "UploadedFiles/";
+                string path = AppDomain.CurrentDomain.BaseDirectory+"UploadedFiles/";
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
                 string filename = Path.GetFileName(file.FileName);
                 if (filename != null) file.SaveAs(Path.Combine(path, filename));
             }
