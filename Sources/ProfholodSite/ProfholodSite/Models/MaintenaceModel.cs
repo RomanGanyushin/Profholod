@@ -85,13 +85,6 @@ namespace ProfHolodSite.Models
 
     public class MachineObject
     {
-        public class MachineObjectData
-        {
-            public Int32 Id { get; set; }
-            public Int32 ParentObjectId { get; set; }
-            public string Name { get; set; }
-        }
-
         public Int32 Id { get; set; }
 
         [Display(Name = "Компонент объекта")]
@@ -117,6 +110,11 @@ namespace ProfHolodSite.Models
         public DateTime ModifyDate { get; set; }
 
        //
+        public MachineObject Copy()
+        {
+            return new MachineObject() { 
+                Id = this.Id, ParentObjectId=(Id!=ParentObjectId)?this.ParentObjectId:0 , Name = this.Name };
+        }
     }
 
    

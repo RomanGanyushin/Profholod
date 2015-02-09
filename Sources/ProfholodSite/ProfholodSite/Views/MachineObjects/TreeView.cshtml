@@ -44,11 +44,17 @@
 
             {
 
-                width: 850,
+                //width: 850,
 
                 source: dataAdapter,
 
-                sortable: true,
+                sortable: false,
+                pageable: false,
+
+                columnsResize: true,
+
+                altRows: true,
+                autoRowHeight: false, 
 
                 ready: function()
 
@@ -59,10 +65,9 @@
                 },
 
                 columns: [
-
-                  { text: 'Id', dataField: 'Id', width: 200 },
-                  { text: 'Name', dataField: 'Name', width: 200 },
-                  { text: 'ParentObjectId', dataField: 'ParentObjectId', width: 200 }
+                  { text: 'Name', dataField: 'Name', width: 400, cellsAlign: 'left', cellsFormat: 'c2' },
+                  //{ text: 'Id', dataField: 'Id', width: 200 },
+                 // { text: 'ParentObjectId', dataField: 'ParentObjectId', width: 200 }
                 ]
 
             });

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ProfHolodSite.Models;
 using System.Web.Script.Serialization;
+using System.IO;
 
 namespace ProfholodSite.Controllers
 {
@@ -25,28 +26,44 @@ namespace ProfholodSite.Controllers
         }
 
         public ActionResult TreeView()
-        {  
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
             return View();
         }
 
-        public class ListItem {
-            public Int32 Id { set; get; }
-            public Int32 ParentObjectId { set; get; }
-            public  string Name { set; get; }
-        };
+        [HttpGet]
+        public ActionResult Upload()
+        {
+            ViewBag.Path =   AppDomain.CurrentDomain.BaseDirectory;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(IEnumerable<HttpPostedFileBase> fileUpload)
+        {
+            foreach (var file in fileUpload)
+            {
+                if (file == null) continue;
+                string path = AppDomain.CurrentDomain.BaseDirectory + "UploadedFiles/";
+                string filename = Path.GetFileName(file.FileName);
+                if (filename != null) file.SaveAs(Path.Combine(path, filename));
+            }
+
+            return RedirectToAction("Index");
+
+        }
+      
 
         public JsonResult GetDataJson()
         {
-         
+            var test = new MachineObject() { Id = 23 };
+
+
             var list = new List<MachineObject>();
             var machineObjects = db.MachineObjects.Include(m => m.MachineObjectGroup).Include(m => m.ParentObject);
             foreach (MachineObject m in machineObjects.ToList())
             {
-               
-                ListItem a = new ListItem() { Id = m.Id, Name = m.Name, ParentObjectId = m.ParentObjectId };
-                
-                if (m.Id == m.ParentObjectId) m.ParentObjectId = 0;
-                list.Add(m);
+                list.Add(m.Copy());
             }
             return Json(list, JsonRequestBehavior.AllowGet);
         }

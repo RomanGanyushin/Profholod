@@ -16,8 +16,15 @@
         <tr>
             <td>Отчетный месяц</td>
             <td><div id='MonthYearInput' style='margin-left: 20px;'></div></td>
-        </tr>
+     
     </table>
+    <br>
+        <table id='SelectFullMode' style='margin-left: 40px;'>
+            <tr>
+                <td>Расширенный отчет</td>
+                <td><div id='isFull' style='margin-left: 20px;'></div></td>
+            </tr>
+        </table>
 
 
 </h4>
@@ -42,11 +49,12 @@
                         $("#SelectMonthYear").show();
                         $("#CreateReport").on('click', function () {
                             var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
+                            var isFull = $("#isFull").jqxCheckBox('val');
                             $.ajax({
                                 url: '@Url.Action("_ReportSummary", "ReportsSummary")',
                                 async: false,
                                 cache: false,
-                                data: ({ Month: 1+getDate.getMonth(), Year: 1900+getDate.getYear(), bFull: true }),
+                                data: ({ Month: 1 + getDate.getMonth(), Year: 1900 + getDate.getYear(), bFull: isFull }),
                                 success: function (data) {
                                      $('#report').html(data);
                                    
@@ -55,10 +63,12 @@
 
                         });
                         $("#PDFReport").on('click', function () {
-                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');                         
+                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
+                            var isFull = $("#isFull").jqxCheckBox('val');
+
                             $("#PDFReport").attr('href', "_ReportSummaryPDF?Month="+
                                 (1+getDate.getMonth())+"&Year="+
-                                 (1900+getDate.getYear())+"&bFull=true");
+                                 (1900 + getDate.getYear()) + "&bFull=" + isFull);
 
                             alert($("#PDFReport").attr('href'));
                         });
@@ -82,7 +92,7 @@
 
                 $("#CreateReport").jqxButton({ width: '150' });
                 $("#PDFReport").jqxButton({ width: '150' });
-              
+                $('#isFull').jqxCheckBox({ width: 120, height: 25 });
               
                 $("#MonthYearInput").jqxDateTimeInput({ formatString: 'Y' , culture: 'ru-RU'});
                 

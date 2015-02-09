@@ -758,6 +758,7 @@
     <Content Include="Views\MaintenaceActions\ReportHtml.cshtml" />
     <Content Include="Views\ReportsSummary\ReportSummary.cshtml" />
     <Content Include="Views\ReportsSummary\Index.cshtml" />
+    <Content Include="Views\MachineObjects\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
