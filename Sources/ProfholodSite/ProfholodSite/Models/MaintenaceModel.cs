@@ -24,6 +24,12 @@ namespace ProfHolodSite.Models
         {
             return new DateTime(Year, Month, 1).AddMonths(1);
         }
+
+        public string MonthToString(int iMonth)
+        {
+            List<string> m = new List<string>{"Январь","Февраль","Март","Апрель","Май","Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+            return m.ElementAt(iMonth-1);
+        }
     }
     
 
@@ -383,6 +389,17 @@ namespace ProfHolodSite.Models
         public virtual MachineObject MachineObject { get; set; }
         public virtual TypeOfFault TypeOfFault { get; set; }
 
+    }
+
+    public class FileObject
+    {
+        public Int32 Id { get; set; }
+        public string Directory { get; set; }
+        public string FilePathName { get; set; }
+        public string Title { get; set; }
+        public string Decription { get; set; }
+        public bool IsDirectory { get; set; }
+        public bool IsRegistred { get; set; }
     }
 
     public class MachineObjectContext : DbContext

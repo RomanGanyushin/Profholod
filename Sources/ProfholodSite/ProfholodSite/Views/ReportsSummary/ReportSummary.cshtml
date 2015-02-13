@@ -3,88 +3,99 @@
 @{
     ViewBag.Title = "Index";
 }
-               
-
-<table class="table" border="1">
+ 
+<table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Date)
+            <img src="~/Content/images/logo.gif" width="200" height="200" />
         </th>
-
         <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Times)
+            <h2><p align="center"> Общий отчет о проделанной работе</p></h2>
+            <h3><p align="center"> электромеханической службой за @Model.PrettyPeriodString</p></h3>
         </th>
+</tr>
+</table>
 
-
-        <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Object)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Action)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().Reason)
-        </th>
-
-       @if (Model.isFull)
-       { 
-         <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().ReportText)
-        </th>
-           <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().RecordAuthorText)
-        </th>
+    <table class="table" border="1">
+        <tr>
             <th>
-            @Html.DisplayNameFor(model => model.content.FirstOrDefault().OperationReportSource)
-        </th>
-       }
+                @Html.DisplayNameFor(model => model.content.FirstOrDefault().Date)
+            </th>
 
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.content.FirstOrDefault().Times)
+            </th>
 
-    @{var prevdate = new DateTime();}
 
-    @foreach (var item in Model.content)
-{
-    <tr >
-        <td>
-            @if (item.Date.Date != prevdate)
+            <th>
+                @Html.DisplayNameFor(model => model.content.FirstOrDefault().Object)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.content.FirstOrDefault().Action)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.content.FirstOrDefault().Reason)
+            </th>
+
+            @if (Model.isFull)
             {
-                @Html.DisplayFor(modelItem => item.Date)
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().ReportText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().RecordAuthorText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().OperationReportSource)
+                </th>
             }
-        </td>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Times)
-        </td>
+        </tr>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Object)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Action)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Reason)
-        </td>
+        @{var prevdate = new DateTime();}
 
-        @if (Model.isFull)
+        @foreach (var item in Model.content)
         {
-            <th>
-                @Html.DisplayFor(modelItem => item.ReportText)
-            </th>
-             <th>
-                @Html.DisplayFor(modelItem => item.RecordAuthorText)
-            </th>
-             <th>
-                @Html.DisplayFor(modelItem => item.OperationReportSource)
-            </th>
+            <tr>
+                <td>
+                    @if (item.Date.Date != prevdate)
+                    {
+                        @Html.DisplayFor(modelItem => item.Date)
+                    }
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Times)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Object)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Action)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reason)
+                </td>
+
+                @if (Model.isFull)
+                {
+                    <th>
+                        @Html.DisplayFor(modelItem => item.ReportText)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.RecordAuthorText)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.OperationReportSource)
+                    </th>
+                }
+
+            </tr>
+
+                prevdate = item.Date.Date;
         }
 
-    </tr>
-
-            prevdate = item.Date.Date;
-}
-
-</table>
+    </table>

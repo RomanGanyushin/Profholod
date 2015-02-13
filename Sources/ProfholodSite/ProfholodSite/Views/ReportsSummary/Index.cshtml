@@ -39,25 +39,30 @@
    
 
         <script type="text/javascript">
-           
-            function OnChangeReportType (iType)
-            {
-                $("#SelectMonthYear").hide();
-                switch (iType)
-                {
-                    case 0:
-                        $("#SelectMonthYear").show();
-                        $("#CreateReport").on('click', function () {
-                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
-                            var isFull = $("#isFull").jqxCheckBox('val');
-                            $.ajax({
-                                url: '@Url.Action("_ReportSummary", "ReportsSummary")',
+
+    function OnChangeReportType(iType) {
+        $("#SelectMonthYear").hide();
+        $("#SelectFullMode").hide();
+
+        $("#CreateReport").off();
+        $("#PDFReport").off();
+
+        switch (iType) {
+            case 0:
+                $("#SelectMonthYear").show();
+                $("#SelectFullMode").show();
+
+                $("#CreateReport").on('click', function () {
+                    var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
+                    var isFull = $("#isFull").jqxCheckBox('val');
+                    $.ajax({
+                        url: '@Url.Action("_ReportSummary", "ReportsSummary")',
                                 async: false,
                                 cache: false,
                                 data: ({ Month: 1 + getDate.getMonth(), Year: 1900 + getDate.getYear(), bFull: isFull }),
                                 success: function (data) {
                                      $('#report').html(data);
-                                   
+
                                 }
                             });
 
@@ -74,7 +79,44 @@
                         });
                     break;
 
+                    case 1:
+                        $("#SelectMonthYear").show();
+                        //$("#SelectFullMode").show();
+
+                        $("#CreateReport").on('click', function () {
+
+                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
+                            var isFull = $("#isFull").jqxCheckBox('val');
+                            $.ajax({
+                                url: '@Url.Action("_ReportMaintenace", "ReportsSummary")',
+                                async: false,
+                                cache: false,
+                                data: ({ Month: 1 + getDate.getMonth(), Year: 1900 + getDate.getYear(), bFull: isFull }),
+                                success: function (data) {
+                                    $('#report').html(data);
+
+                                }
+                            });
+
+                        });
+
+                        $("#PDFReport").on('click', function () {
+
+                            var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
+                            var isFull = $("#isFull").jqxCheckBox('val');
+
+                            $("#PDFReport").attr('href', "_ReportMaintanacePDF?Month=" +
+                                (1 + getDate.getMonth()) + "&Year=" +
+                                 (1900 + getDate.getYear()) + "&bFull=" + isFull);
+
+                            alert($("#PDFReport").attr('href'));
+                        });
+
+                    break;
                 }
+
+
+
             }
 
             $(document).ready(function () {
@@ -83,39 +125,38 @@
 
                              "Общий отчет о проделанной работе",
 
-                             "Starts with(Case Sensitive)"
-
+                             "Отчет по выполненным регламентным работам"
 
                 ];
-              
-                $("#SelectMonthYear").hide();
+
+                //$("#SelectMonthYear").hide();
 
                 $("#CreateReport").jqxButton({ width: '150' });
                 $("#PDFReport").jqxButton({ width: '150' });
                 $('#isFull').jqxCheckBox({ width: 120, height: 25 });
-              
+
                 $("#MonthYearInput").jqxDateTimeInput({ formatString: 'Y' , culture: 'ru-RU'});
-                
-                
+
+
 
                 $("#SelectDocumentType").jqxDropDownList({ source: source, selectedIndex: 0,  width:'auto' });
                 $('#SelectDocumentType').on('select', function (event) {
-                
+
                     var index = event.args.index;
                     OnChangeReportType(index);
-                    
+
                 });
 
                 OnChangeReportType(0);
 
-            
-                
-              
+
+
+
 
             });
 
 
-            
+
 
         </script>
 
