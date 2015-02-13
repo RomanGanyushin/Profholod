@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<div id="treeGrid"></div>
+<div id='Menu'>
+
+    <ul>
+
+        <li>Edit Selected Row</li>
+
+        <li>Delete Selected Row</li>
+
+    </ul>
+
+</div>
+
+<script>
+
+
+    var source =
+
+    {
+
+        dataType: "json",
+
+        dataFields: [
+
+           // { name: 'Id', type: 'number' },
+
+           // { name: 'ParentObjectId', type: 'number' },
+
+            { name: 'Title', type: 'string' },
+            { name: 'FilePathName', type: 'string' },
+            { name: 'Directory', type: 'string' }
+            
+        ],
+
+        hierarchy:
+
+        {
+
+            keyDataField: { name: 'FilePathName' },
+
+            parentDataField: { name: 'Directory' }
+
+        },
+
+        id: 'Id',
+
+        //url: 'GetUploadFiles'
+        url: '@Url.Action("GetUploadFiles", "FileSystem")'
+
+    };
+
+    var dataAdapter = new $.jqx.dataAdapter(source);
+
+    // create Tree Grid
+
+    $("#treeGrid").jqxTreeGrid(
+
+    {
+
+        //width: 850,
+
+        source: dataAdapter,
+
+        sortable: false,
+        pageable: false,
+        editable: true,
+        columnsResize: true,
+
+        altRows: true,
+        autoRowHeight: false,
+
+        ready: function () {
+
+            $("#treeGrid").jqxTreeGrid();
+
+        },
+
+        columns: [
+          { text: 'Title', dataField: 'Title', width: 400, cellsAlign: 'left', cellsFormat: 'c2' },
+          //{ text: 'Id', dataField: 'Id', width: 200 },
+         // { text: 'ParentObjectId', dataField: 'ParentObjectId', width: 200 }
+        ]
+
+    });
+
+    var contextMenu = $("#Menu").jqxMenu({ width: 200, height: 58, autoOpenPopup: false, mode: 'popup' });
+
+    $("#treeGrid").on('contextmenu', function () {
+
+        return false;
+    });
+
+    $("#treeGrid").on('rowClick', function (event) {
+
+        var args = event.args;
+
+        if (args.originalEvent.button == 2) {
+
+            var scrollTop = $(window).scrollTop();
+
+            var scrollLeft = $(window).scrollLeft();
+
+            contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
+
+
+
+            return false;
+
+        }
+
+    });
+
+
+
+    $("#Menu").on('itemclick', function (event) {
+
+        var args = event.args;
+       
+        var selection = $("#treeGrid").jqxTreeGrid('getSelection');
+
+        var rowid = selection[0].uid;
+      
+        if ($.trim($(args).text()) == "Edit Selected Row") {
+
+            $("#treeGrid").jqxTreeGrid('beginRowEdit', rowid);
+            alert(selection[0].Title);
+
+        } else {
+
+            $("#treeGrid").jqxTreeGrid('deleteRow', rowid);
+
+        }
+
+    });
+
+
+
+</script>

@@ -1,0 +1,102 @@
+﻿@model ProfHolodSite.Models.PerformMaintanaceSummary
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<table>
+    <tr>
+        <th>
+            <img src="~/Content/images/logo.gif" width="200" height="200" />
+        </th>
+        <th>
+            <h2><p align="center"> Отчет по выполненным регламентным работам</p></h2>
+            <h3><p align="center"> электромеханической службой за @Model.PrettyPeriodString</p></h3>
+        </th>
+    </tr>
+</table>
+
+
+        <table class="table" border="1">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().Date)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().Times)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().MaintanaceObject)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().Object)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.content.FirstOrDefault().Action)
+                </th>
+
+
+
+                @if (Model.isFull)
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.content.FirstOrDefault().ReportText)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.content.FirstOrDefault().RecordAuthorText)
+                    </th>
+
+                }
+
+            </tr>
+
+            @{var prevdate = new DateTime();}
+
+            @foreach (var item in Model.content)
+            {
+                <tr>
+                    <td>
+                        @if (item.Date.Date != prevdate)
+                        {
+                            @Html.DisplayFor(modelItem => item.Date)
+                        }
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Times)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaintanaceObject)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Object)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Action)
+                    </td>
+
+
+                    @if (Model.isFull)
+                    {
+                        <th>
+                            @Html.DisplayFor(modelItem => item.ReportText)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.RecordAuthorText)
+                        </th>
+
+                    }
+
+                </tr>
+
+                    prevdate = item.Date.Date;
+            }
+
+        </table>
