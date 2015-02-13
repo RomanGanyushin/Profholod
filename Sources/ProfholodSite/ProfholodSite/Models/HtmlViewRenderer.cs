@@ -213,6 +213,9 @@ namespace ReportManagement
             response.Cache.SetCacheability(HttpCacheability.Public);
             response.ContentType = this.contentType;
 
+            response.AddHeader("Content-Type", "application/pdf");
+            response.AddHeader("Content-Disposition",String.Format("{0}; filename=Test.pdf;", "inline"));
+
             using (var stream = new MemoryStream(this.contentBytes))
             {
                 stream.WriteTo(response.OutputStream);
