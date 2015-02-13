@@ -71,7 +71,7 @@
                             var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
                             var isFull = $("#isFull").jqxCheckBox('val');
 
-                            $("#PDFReport").attr('href', "_ReportSummaryPDF?Month="+
+                            $("#PDFReport").attr('href', "ReportsSummary/_ReportSummaryPDF?Month=" +
                                 (1+getDate.getMonth())+"&Year="+
                                  (1900 + getDate.getYear()) + "&bFull=" + isFull);
 
@@ -105,7 +105,7 @@
                             var getDate = $('#MonthYearInput').jqxDateTimeInput('getDate');
                             var isFull = $("#isFull").jqxCheckBox('val');
 
-                            $("#PDFReport").attr('href', "_ReportMaintanacePDF?Month=" +
+                            $("#PDFReport").attr('href', "ReportsSummary/_ReportMaintanacePDF?Month=" +
                                 (1 + getDate.getMonth()) + "&Year=" +
                                  (1900 + getDate.getYear()) + "&bFull=" + isFull);
 
