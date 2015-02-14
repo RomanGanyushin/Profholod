@@ -90,7 +90,15 @@ namespace ProfHolodSite.Models
     }
 
 
-    public class PerformMaintanaceSummary
+    public class ReportDocument
+    {
+        public string Caption { get; set;}
+        public string GetPDFFilename()
+        {
+            return Caption + ".pdf";
+        }
+    }
+    public class PerformMaintanaceSummary : ReportDocument
     {
         private MachineObjectContext db = new MachineObjectContext();
 
@@ -105,6 +113,7 @@ namespace ProfHolodSite.Models
             dateFrom = From;
             dateTo = To;
             PrettyPeriodString = new MDTime().MonthToString(dateFrom.Month) + " " + dateFrom.Year.ToString();
+            Caption = "Отчет по выполненным регламентным работам";
 
             content = new List<AnyMaintanace>();
 
@@ -145,7 +154,7 @@ namespace ProfHolodSite.Models
     }
 
 
-    public class PerformOperationsSummary
+    public class PerformOperationsSummary : ReportDocument
     {
         private MachineObjectContext db = new MachineObjectContext();
         private string ConvertUserToString(string user)
@@ -153,11 +162,15 @@ namespace ProfHolodSite.Models
             return db.StaffPersons
                 .Where(p => p.UserName == user).First().Surname;
         }
+
+        
+
         public void  CreatePerformReport(DateTime From, DateTime To)
         {
             dateFrom = From;
             dateTo = To;
             PrettyPeriodString = new MDTime().MonthToString(dateFrom.Month) + " " + dateFrom.Year.ToString();
+            Caption = "Общий отчет о проделанной работе";
 
              content = new List<AnyOperation>();
 

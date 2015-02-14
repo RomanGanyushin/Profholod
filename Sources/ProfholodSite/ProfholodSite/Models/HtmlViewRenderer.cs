@@ -166,7 +166,7 @@ namespace ReportManagement
 
             using (var outputMemoryStream = new MemoryStream())
             {
-                using (var pdfDocument = new Document(PageSize.A4, HorizontalMargin, HorizontalMargin, VerticalMargin, VerticalMargin))
+                using (var pdfDocument = new Document(PageSize.A4.Rotate(), HorizontalMargin, HorizontalMargin, VerticalMargin, VerticalMargin))
                 {
                     PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDocument, outputMemoryStream);
                     pdfWriter.CloseStream = false;
@@ -202,11 +202,13 @@ namespace ReportManagement
     {
         private readonly string contentType;
         private readonly byte[] contentBytes;
+        private readonly string filename;
 
-        public BinaryContentResult(byte[] contentBytes, string contentType)
+        public BinaryContentResult(byte[] contentBytes, string contentType, string filename)
         {
             this.contentBytes = contentBytes;
             this.contentType = contentType;
+            this.filename = filename;
         }
 
         public override void ExecuteResult(ControllerContext context)
@@ -217,7 +219,7 @@ namespace ReportManagement
             response.ContentType = this.contentType;
 
             response.AddHeader("Content-Type", "application/pdf");
-            response.AddHeader("Content-Disposition",String.Format("{0}; filename=Test.pdf;", "inline"));
+            response.AddHeader("Content-Disposition", String.Format("{0}; filename={1};", "inline", filename));
 
             using (var stream = new MemoryStream(this.contentBytes))
             {

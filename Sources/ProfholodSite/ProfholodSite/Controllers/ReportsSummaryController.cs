@@ -51,8 +51,8 @@ namespace ProfholodSite.Controllers
             summary.isFull = bFull;
 
             string text = new ReportManagement.HtmlViewRenderer().RenderViewToString(this, "ReportSummary", summary);
-            byte[] buffer = new ReportManagement.StandardPdfRenderer().Render(text, "Testing");
-             return new  ReportManagement.BinaryContentResult(buffer, "application/pdf");
+            byte[] buffer = new ReportManagement.StandardPdfRenderer().Render(text, "");
+            return new ReportManagement.BinaryContentResult(buffer, "application/pdf", summary.GetPDFFilename());
         }
 
         public PartialViewResult _ReportMaintenace(int Month, int Year, bool bFull)
@@ -85,8 +85,8 @@ namespace ProfholodSite.Controllers
             summary.isFull = bFull;
 
             string text = new ReportManagement.HtmlViewRenderer().RenderViewToString(this, "ReportMaintanace", summary);
-            byte[] buffer = new ReportManagement.StandardPdfRenderer().Render(text, "Testing");
-            return new ReportManagement.BinaryContentResult(buffer, "application/pdf");
+            byte[] buffer = new ReportManagement.StandardPdfRenderer().Render(text, "");
+            return new ReportManagement.BinaryContentResult(buffer, "application/pdf", summary.GetPDFFilename());
         }
 
 	}
