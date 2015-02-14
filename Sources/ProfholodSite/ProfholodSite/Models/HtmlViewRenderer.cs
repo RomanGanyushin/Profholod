@@ -162,6 +162,8 @@ namespace ReportManagement
             //Set the default encoding to support Unicode characters
             ST.LoadTagStyle(HtmlTags.BODY, HtmlTags.ENCODING, BaseFont.IDENTITY_H);
 
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
             using (var outputMemoryStream = new MemoryStream())
             {
                 using (var pdfDocument = new Document(PageSize.A4, HorizontalMargin, HorizontalMargin, VerticalMargin, VerticalMargin))
