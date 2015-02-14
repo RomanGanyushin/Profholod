@@ -169,6 +169,7 @@ namespace ReportManagement
                     PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDocument, outputMemoryStream);
                     pdfWriter.CloseStream = false;
                     pdfWriter.PageEvent = new PrintHeaderFooter { Title = pageTitle };
+                    
                     pdfDocument.Open();
 
                     using (var htmlViewReader = new StringReader(htmlText))
@@ -176,7 +177,7 @@ namespace ReportManagement
                         using (var htmlWorker = new HTMLWorker(pdfDocument))
                         {
                             htmlWorker.SetStyleSheet(ST);
-
+                            
                             //string HJ = "Привет !!!!!!!!!!!!!!! Привет";
                             //Chunk c1 = new Chunk(HJ,font);
                             // pdfDocument.Add(c1);
