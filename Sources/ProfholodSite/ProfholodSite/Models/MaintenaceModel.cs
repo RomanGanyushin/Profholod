@@ -445,11 +445,7 @@ namespace ProfHolodSite.Models
     }
 
 
-    public class MaintenaceModel
-    {
-
-    }
-
+   
    
 
 }

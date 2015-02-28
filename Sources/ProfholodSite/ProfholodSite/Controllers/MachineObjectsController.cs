@@ -30,8 +30,6 @@ namespace ProfholodSite.Controllers
             return View();
         }
 
-       
-      
 
         public JsonResult GetDataJson()
         {
