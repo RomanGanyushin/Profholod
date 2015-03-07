@@ -8,6 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using ProfholodSite.Models;
 
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using ProfholodSite.DataAcquisition;
+
 namespace ProfholodSite.Controllers
 {
     public class DASessionController : Controller
@@ -35,7 +43,12 @@ namespace ProfholodSite.Controllers
             return View(dataacquisitionsession);
         }
 
-
+        public JsonResult Login()
+        {
+            var a =  HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            var result =  a.PasswordSignIn("thunder_glfx@list.ru", "62_Lawic", true, shouldLockout: false);
+            return Json("Ok", JsonRequestBehavior.AllowGet);  
+        }
         public JsonResult CreateSessionAcquisition(int IDTable,int OpenSessionCode, string OpenSessionDateTime)
         {
           
@@ -111,10 +124,9 @@ namespace ProfholodSite.Controllers
 
         public JsonResult IsCreateSessionAcquisition(int IDTable, string OpenSessionDateTime)
         {
+            string s = User.Identity.Name;
             try
             {
-        
-
                 switch (IDTable)
                 {
                     case 0:
@@ -274,6 +286,128 @@ namespace ProfholodSite.Controllers
             return Json("Error", JsonRequestBehavior.AllowGet);
         }
 
+    
+        public JsonResult PutAlarmRecord(string IdAlarmSession, string RecordDateTime, string Message)
+        {
+            try
+            {
+                var js = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var objs = js.Deserialize<Dictionary<string, object>>(Message).Values;
+                List<Int32> newalarms = new List<Int32>();
+
+                /// Добавляем новые записи
+                if (objs.ToList()[0] != "")
+                {     
+                    foreach (System.Collections.ArrayList item in objs)
+                        foreach (Dictionary<string, object> _item in item)
+                        {
+                            string code_1 = _item["Code_1"].ToString();
+                            int code_2 = Int32.Parse(_item["Code_2"].ToString());
+                            int code_3 = Int32.Parse(_item["Code_3"].ToString());
+
+                            Int32 alarm_id = db.GetNotNullPLCAlarm(code_1, code_2, code_3);
+
+                            AlarmMessage alarmMessage = new AlarmMessage()
+                            {
+                                Begin = DateTime.Parse(RecordDateTime),
+                                End = DateTime.Parse(RecordDateTime),
+                                PLCAlarmId = alarm_id,
+                                AlarmsSessionId = DateTime.Parse(IdAlarmSession)
+                            }; newalarms.Add(alarm_id);
+
+                            db.AlarmMessages.Add(alarmMessage);
+                            db.SaveChanges();
+                        }
+                }
+
+                    /// Закрываем старые
+                    var notClosedRecords =  db.AlarmMessages
+                        .Where(p =>p.Begin == p.End);
+
+                    foreach (var for_close in notClosedRecords.ToList())
+                    {
+                        bool doClose = true;
+                        foreach (var newalarm in newalarms)
+                            if (for_close.PLCAlarmId == newalarm)
+                                doClose = false;
+
+                        if (doClose)
+                        {
+                            for_close.End = DateTime.Parse(RecordDateTime);
+                            db.Entry(for_close).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    }
+
+               
+                return Json("Ok", JsonRequestBehavior.AllowGet);
+            }
+
+            catch (SystemException) { }
+            return Json("Error", JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult PutMaterialRecord(string IdCastingSession, string RecordDateTime, string Message)
+        {
+            try
+            {
+                var js = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var objs = js.Deserialize<Dictionary<string, object>>(Message).Values;
+                List<Int32> newalarms = new List<Int32>();
+
+                /// Добавляем новые записи
+                if (objs.ToList()[0] != "")
+                {
+                    foreach (System.Collections.ArrayList item in objs)
+                        foreach (Dictionary<string, object> _item in item)
+                        {
+                            string code_1 = _item["Code_1"].ToString();
+                            int code_2 = Int32.Parse(_item["Code_2"].ToString());
+                            int code_3 = Int32.Parse(_item["Code_3"].ToString());
+
+                            Int32 alarm_id = db.GetNotNullPLCAlarm(code_1, code_2, code_3);
+
+                            AlarmMessage alarmMessage = new AlarmMessage()
+                            {
+                                Begin = DateTime.Parse(RecordDateTime),
+                                End = DateTime.Parse(RecordDateTime),
+                                PLCAlarmId = alarm_id,
+                                AlarmsSessionId = DateTime.Parse(IdAlarmSession)
+                            }; newalarms.Add(alarm_id);
+
+                            db.AlarmMessages.Add(alarmMessage);
+                            db.SaveChanges();
+                        }
+                }
+
+                /// Закрываем старые
+                var notClosedRecords = db.AlarmMessages
+                    .Where(p => p.Begin == p.End);
+
+                foreach (var for_close in notClosedRecords.ToList())
+                {
+                    bool doClose = true;
+                    foreach (var newalarm in newalarms)
+                        if (for_close.PLCAlarmId == newalarm)
+                            doClose = false;
+
+                    if (doClose)
+                    {
+                        for_close.End = DateTime.Parse(RecordDateTime);
+                        db.Entry(for_close).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+
+                return Json("Ok", JsonRequestBehavior.AllowGet);
+            }
+
+            catch (SystemException) { }
+            return Json("Error", JsonRequestBehavior.AllowGet);
+
+        }
        
 
 

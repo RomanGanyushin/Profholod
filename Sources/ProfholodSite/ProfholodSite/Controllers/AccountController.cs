@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProfholodSite.Models;
 
+
 namespace ProfholodSite.Controllers
 {
     [Authorize]

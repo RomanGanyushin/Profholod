@@ -7,11 +7,12 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Net;
 using System.Net.Mail;
+using System.Data.Entity;
 using ProfHolodSite.Models;
+using ProfholodSite.DataAcquisition;
 
 namespace ProfholodSite
 {
-
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -27,6 +28,8 @@ namespace ProfholodSite
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+    
+           // Database.SetInitializer(new DataAcquisitioneInitializer());
 
             timer4h = new System.Threading.Timer(new System.Threading.TimerCallback(DoRun4h), null, 0, 1000 * 60 * 60 * 4);
         }
