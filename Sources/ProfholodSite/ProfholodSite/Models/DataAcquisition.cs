@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using ProfHolodSite.Models;
 
 namespace ProfholodSite.DataAcquisition
 {
+   
     public class Session
     {
         [Key]
@@ -21,26 +23,31 @@ namespace ProfholodSite.DataAcquisition
         public Int32 CloseSessionCode { get; set; }
 
     }
+
+     [Table("dbo.da.DataAcquisitionSession")] 
     public class DataAcquisitionSession : Session
     {
       
     }
 
+     [Table("dbo.da.LinearSession")] 
     public class LinearSession : Session
     {
        
     }
-
+     [Table("dbo.da.CastingSession")] 
     public class CastingSession : Session
     {
 
     }
 
+     [Table("dbo.da.AlarmsSession")] 
     public class AlarmsSession : Session
     {
 
     }
 
+     [Table("dbo.da.PLCAlarm")] 
     public class PLCAlarm
     {
         public Int32 Id { get; set; }
@@ -53,6 +60,7 @@ namespace ProfholodSite.DataAcquisition
 
     }
 
+    [Table("dbo.da.AlarmMessage")] 
     public class AlarmMessage
     {
         public Int32 Id { get;set;}
@@ -67,6 +75,7 @@ namespace ProfholodSite.DataAcquisition
         public virtual AlarmsSession AlarmsSession { get; set; }
     };
 
+      [Table("dbo.da.CastingProccessTable")] 
     public class CastingProccessTable
     {
         public Int32 Id { get; set; }

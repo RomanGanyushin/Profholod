@@ -373,7 +373,7 @@ namespace ProfholodSite.Controllers
                                 Begin = DateTime.Parse(RecordDateTime),
                                 End = DateTime.Parse(RecordDateTime),
                                 PLCAlarmId = alarm_id,
-                                AlarmsSessionId = DateTime.Parse(IdAlarmSession)
+                                AlarmsSessionId = DateTime.Parse(IdCastingSession)
                             }; newalarms.Add(alarm_id);
 
                             db.AlarmMessages.Add(alarmMessage);
