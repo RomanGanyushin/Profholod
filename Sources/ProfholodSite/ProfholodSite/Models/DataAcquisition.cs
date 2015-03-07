@@ -24,30 +24,30 @@ namespace ProfholodSite.DataAcquisition
 
     }
 
-     [Table("dbo.da.DataAcquisitionSession")] 
+     [Table("da.DataAcquisitionSession")] 
     public class DataAcquisitionSession : Session
     {
       
     }
 
-     [Table("dbo.da.LinearSession")] 
+     [Table("da.LinearSession")] 
     public class LinearSession : Session
     {
        
     }
-     [Table("dbo.da.CastingSession")] 
+     [Table("da.CastingSession")] 
     public class CastingSession : Session
     {
 
     }
 
-     [Table("dbo.da.AlarmsSession")] 
+     [Table("da.AlarmsSession")] 
     public class AlarmsSession : Session
     {
 
     }
 
-     [Table("dbo.da.PLCAlarm")] 
+     [Table("da.PLCAlarm")] 
     public class PLCAlarm
     {
         public Int32 Id { get; set; }
@@ -60,7 +60,7 @@ namespace ProfholodSite.DataAcquisition
 
     }
 
-    [Table("dbo.da.AlarmMessage")] 
+    [Table("da.AlarmMessage")] 
     public class AlarmMessage
     {
         public Int32 Id { get;set;}
@@ -75,7 +75,7 @@ namespace ProfholodSite.DataAcquisition
         public virtual AlarmsSession AlarmsSession { get; set; }
     };
 
-      [Table("dbo.da.CastingProccessTable")] 
+      [Table("da.CastingProccessTable")] 
     public class CastingProccessTable
     {
         public Int32 Id { get; set; }
