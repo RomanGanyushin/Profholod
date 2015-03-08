@@ -353,53 +353,60 @@ namespace ProfholodSite.Controllers
             try
             {
                 var js = new System.Web.Script.Serialization.JavaScriptSerializer();
-                var objs = js.Deserialize<Dictionary<string, object>>(Message).Values;
-                List<Int32> newalarms = new List<Int32>();
+                var objs = js.Deserialize<Dictionary<string, string>>(Message);
 
-                /// Добавляем новые записи
-                if (objs.ToList()[0] != "")
+               
+                CastingProccessTable proc = new CastingProccessTable()
                 {
-                    foreach (System.Collections.ArrayList item in objs)
-                        foreach (Dictionary<string, object> _item in item)
-                        {
-                            string code_1 = _item["Code_1"].ToString();
-                            int code_2 = Int32.Parse(_item["Code_2"].ToString());
-                            int code_3 = Int32.Parse(_item["Code_3"].ToString());
+                    RecordTime = DateTime.Parse(RecordDateTime),
+                    CastingSessionId = DateTime.Parse(IdCastingSession),
 
-                            Int32 alarm_id = db.GetNotNullPLCAlarm(code_1, code_2, code_3);
+                    setMeterialA = double.Parse(objs["DB_ForPC_S_Port_A"].Replace(".", ",")),
+                    realMeterialA = double.Parse(objs["DB_ForPC_R_Port_A"].Replace(".", ",")),
+                    errorMeterialA = double.Parse(objs["ERR_Port_A"].Replace(".", ",")),
 
-                            AlarmMessage alarmMessage = new AlarmMessage()
-                            {
-                                Begin = DateTime.Parse(RecordDateTime),
-                                End = DateTime.Parse(RecordDateTime),
-                                PLCAlarmId = alarm_id,
-                                AlarmsSessionId = DateTime.Parse(IdCastingSession)
-                            }; newalarms.Add(alarm_id);
+                    setMeterialB = double.Parse(objs["DB_ForPC_S_Port_B"].Replace(".", ",")),
+                    realMeterialB = double.Parse(objs["DB_ForPC_R_Port_B"].Replace(".", ",")),
+                    errorMeterialB = double.Parse(objs["ERR_Port_B"].Replace(".", ",")),
 
-                            db.AlarmMessages.Add(alarmMessage);
-                            db.SaveChanges();
-                        }
-                }
+                    setMeterialC = double.Parse(objs["DB_ForPC_S_Port_C"].Replace(".", ",")),
+                    realMeterialC = double.Parse(objs["DB_ForPC_R_Port_C"].Replace(".", ",")),
+                    errorMeterialC = double.Parse(objs["ERR_Port_C"].Replace(".", ",")),
 
-                /// Закрываем старые
-                var notClosedRecords = db.AlarmMessages
-                    .Where(p => p.Begin == p.End);
+                    setMeterialD = double.Parse(objs["DB_ForPC_S_Port_D"].Replace(".", ",")),
+                    realMeterialD = double.Parse(objs["DB_ForPC_R_Port_D"].Replace(".", ",")),
+                    errorMeterialD = double.Parse(objs["ERR_Port_D"].Replace(".", ",")),
 
-                foreach (var for_close in notClosedRecords.ToList())
+                    setMeterialE = double.Parse(objs["DB_ForPC_S_Port_E"].Replace(".", ",")),
+                    realMeterialE = double.Parse(objs["DB_ForPC_R_Port_E"].Replace(".", ",")),
+                    errorMeterialE = double.Parse(objs["ERR_Port_E"].Replace(".", ",")),
+
+                    setMeterialF = double.Parse(objs["DB_ForPC_S_Port_F"].Replace(".", ",")),
+                    realMeterialF = double.Parse(objs["DB_ForPC_R_Port_F"].Replace(".", ",")),
+                    errorMeterialF = double.Parse(objs["ERR_Port_F"].Replace(".", ",")),
+
+                    setMeterialN = double.Parse(objs["DB_ForPC_S_Port_N"].Replace(".", ",")),
+                    realMeterialN = double.Parse(objs["DB_ForPC_R_Port_N"].Replace(".", ",")),
+                    errorMeterialN = double.Parse(objs["ERR_Port_N"].Replace(".", ",")),
+
+                    setMeterialNuc = double.Parse(objs["DB_ParPmp_SetPorNuc"].Replace(".", ",")),
+                    realMeterialNuc = double.Parse(objs["DB_ParPmp_RealPortNuc"].Replace(".", ",")),
+                    errorMeterialNuc = double.Parse(objs["ERR_Port_Nuc"].Replace(".", ","))
+
+                };
+
+                
+                if (db.CastingProccess.Count() < 1000)
                 {
-                    bool doClose = true;
-                    foreach (var newalarm in newalarms)
-                        if (for_close.PLCAlarmId == newalarm)
-                            doClose = false;
-
-                    if (doClose)
-                    {
-                        for_close.End = DateTime.Parse(RecordDateTime);
-                        db.Entry(for_close).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    db.CastingProccess.Add(proc);               
                 }
-
+                else
+                {
+                    var _replace = db.CastingProccess.OrderBy(p => p.RecordTime).First();
+                    _replace.CopyFrom(proc);
+                    db.Entry(_replace).State = EntityState.Modified;
+                }
+                db.SaveChanges();
 
                 return Json("Ok", JsonRequestBehavior.AllowGet);
             }

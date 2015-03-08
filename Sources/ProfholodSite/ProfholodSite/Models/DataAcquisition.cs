@@ -72,7 +72,7 @@ namespace ProfholodSite.DataAcquisition
         public virtual PLCAlarm PLCAlarm { get; set; }
 
         public DateTime AlarmsSessionId { get; set; }
-        public virtual AlarmsSession AlarmsSession { get; set; }
+
     };
 
       [Table("da.CastingProccessTable")] 
@@ -88,6 +88,10 @@ namespace ProfholodSite.DataAcquisition
         public double setMeterialB { get; set; }
         public double realMeterialB { get; set; }
         public double errorMeterialB { get; set; }
+
+        public double setMeterialC { get; set; }
+        public double realMeterialC { get; set; }
+        public double errorMeterialC { get; set; }
 
         public double setMeterialD { get; set; }
         public double realMeterialD { get; set; }
@@ -110,6 +114,22 @@ namespace ProfholodSite.DataAcquisition
         public double setMeterialNuc { get; set; }
         public double realMeterialNuc { get; set; }
         public double errorMeterialNuc { get; set; }
+
+
+        public DateTime CastingSessionId { get; set; }
+
+        public void CopyFrom(CastingProccessTable c)
+        {
+            RecordTime = c.RecordTime;
+            setMeterialA= c.setMeterialA; realMeterialA = c.realMeterialA; errorMeterialA = c.errorMeterialA;
+            setMeterialB = c.setMeterialB; realMeterialB = c.realMeterialB; errorMeterialB = c.errorMeterialB;
+            setMeterialC = c.setMeterialC; realMeterialC = c.realMeterialC; errorMeterialC = c.errorMeterialC;
+            setMeterialD = c.setMeterialD; realMeterialD = c.realMeterialD; errorMeterialD = c.errorMeterialD;
+            setMeterialE = c.setMeterialE; realMeterialE = c.realMeterialE; errorMeterialE = c.errorMeterialE;
+            setMeterialF = c.setMeterialF; realMeterialF = c.realMeterialF; errorMeterialF = c.errorMeterialF;
+            setMeterialN = c.setMeterialN; realMeterialN = c.realMeterialN; errorMeterialN = c.errorMeterialN;
+            setMeterialNuc = c.setMeterialNuc; realMeterialNuc = c.realMeterialNuc; errorMeterialNuc = c.errorMeterialNuc;
+        }
     }
 
     public class DataAcquisitionContext : DbContext
