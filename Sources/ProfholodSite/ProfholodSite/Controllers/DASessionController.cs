@@ -395,6 +395,14 @@ namespace ProfholodSite.Controllers
 
                 };
 
+                if (db.CastingProccess.Count() > 0)
+                {
+                    var _last = db.CastingProccess.OrderBy(p => p.RecordTime).ToList().Last();
+                    if (_last.RecordTime >= proc.RecordTime)
+                    {
+                        return Json("Ok", JsonRequestBehavior.AllowGet);
+                    }
+                }
                 
                 if (db.CastingProccess.Count() < 1000)
                 {
@@ -411,7 +419,7 @@ namespace ProfholodSite.Controllers
                 return Json("Ok", JsonRequestBehavior.AllowGet);
             }
 
-            catch (SystemException) { }
+            catch (SystemException e) { }
             return Json("Error", JsonRequestBehavior.AllowGet);
 
         }
