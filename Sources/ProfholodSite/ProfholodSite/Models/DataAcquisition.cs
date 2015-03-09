@@ -134,6 +134,10 @@ namespace ProfholodSite.DataAcquisition
        virtual public double errorMeterialA_Percent{
            get { return (setMeterialA==0)?0:(100.0*errorMeterialA / setMeterialA); }
           }
+       virtual public double errorMeterialB_Percent
+       {
+           get { return (setMeterialB == 0) ? 0 : (100.0 * errorMeterialB / setMeterialB); }
+       }
     }
 
     public class DataAcquisitionContext : DbContext
