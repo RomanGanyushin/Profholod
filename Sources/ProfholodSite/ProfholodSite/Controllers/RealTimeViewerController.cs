@@ -24,7 +24,7 @@ namespace ProfholodSite.Controllers
         // GET: /RealTimeViewer/
         public JsonResult GetDataJson()
         {
-            return Json(db.CastingProccess.ToList(), JsonRequestBehavior.AllowGet);
+            return Json(db.CastingProccess.OrderBy(m=> m.RecordTime).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult Index()
         {
