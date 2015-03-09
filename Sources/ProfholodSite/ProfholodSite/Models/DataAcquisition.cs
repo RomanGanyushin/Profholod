@@ -130,6 +130,10 @@ namespace ProfholodSite.DataAcquisition
             setMeterialN = c.setMeterialN; realMeterialN = c.realMeterialN; errorMeterialN = c.errorMeterialN;
             setMeterialNuc = c.setMeterialNuc; realMeterialNuc = c.realMeterialNuc; errorMeterialNuc = c.errorMeterialNuc;
         }
+
+       virtual public double errorMeterialA_Percent{
+           get { return (setMeterialA==0)?0:(100.0*errorMeterialA / setMeterialA); }
+          }
     }
 
     public class DataAcquisitionContext : DbContext

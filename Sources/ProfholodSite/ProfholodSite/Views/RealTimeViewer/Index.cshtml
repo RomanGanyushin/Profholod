@@ -31,13 +31,16 @@
 
                 dataFields: [
 
-                    { name: 'RecordTime', type: 'date' },
+                    { name: 'RecordTime' },
 
-                    { name: 'setMeterialA', type: 'number' },
+                    { name: 'setMeterialA', type: 'float' },
 
-                    { name: 'realMeterialA', type: 'number' },
+                    { name: 'realMeterialA', type: 'float' },
 
-                    { name: 'errorMeterialA', type: 'number' },
+                    { name: 'errorMeterialA', type: 'float' },
+
+                    { name: 'errorMeterialA_Percent', type: 'float' }
+                    
                     
                 ],
 
@@ -45,19 +48,18 @@
 
                 url: 'GetDataJson'
 
+                 
+
+
             };
 
         var dataAdapter = new $.jqx.dataAdapter(source);
-
-   
-
-
 
             // prepare jqxChart settings
 
             var settings = {
 
-                title: "Fitness & exercise weekly scorecard",
+                title: "Материал A",
 
                 description: "Time spent in vigorous exercise",
 
@@ -78,9 +80,18 @@
                 {
 
                     dataField: 'RecordTime',
+                    type: 'date',
+                    baseUnit: 'second',
+                    flip: false,
+                    gridLines: { visible: true },
+                    showToolTips: false,
 
-                    gridLines: { visible: true }
+                    formatFunction: function (value) {
 
+                        return $.jqx.dataFormat.formatdate(value, "hh:mm:ss", 'ru-ru');
+
+                    },
+ 
                 },
 
                 colorScheme: 'scheme02',
@@ -91,7 +102,7 @@
                    
 
 
-                //    //visible: true,
+                // //visible: true,
 
                 //    //title: { text: "Time in minutes" }
 
@@ -107,7 +118,7 @@
 
                               series: [
 
-                                      { dataField: 'errorMeterialA', displayText: 'errorMeterialA', opacity: 0.7, lineWidth: 1 }
+                                      { dataField: 'errorMeterialA_Percent', displayText: 'errorMeterialA_Percent', opacity: 0.7, lineWidth: 1 }
 
                               ]
 
