@@ -101,9 +101,7 @@
                     showToolTips: false,
 
                     formatFunction: function (value) {
-
-                        var datestamp = new Date(value.getUTCFullYear(), value.getUTCMonth(), value.getDate(), value.getUTCHours(), value.getMinutes(), value.getUTCSeconds());
-                        return $.jqx.dataFormat.formatdate(datestamp, "HH:mm:ss", 'en-us');
+                       return $.jqx.dataFormat.formatdate(TransalteTime(value), "HH:mm:ss", 'en-us');
 
                     }
 
@@ -145,27 +143,29 @@
         $('#jqxChart_B').jqxChart(CreateSetting("Maтериал B", "", "B"));
 
        
-
-        var casting_begin = "";
-        var data_last     = ""
-        if (dataAdapter.getrecords().length > 0)
+        function Update()
         {
-            var CastingSession = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].CastingSessionId;
-            var RecordTime = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].RecordTime;
+            var casting_begin = "";
+            var data_last     = ""
+            if (dataAdapter.getrecords().length > 0)
+            {
+                var CastingSession = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].CastingSessionId;
+                var RecordTime = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].RecordTime;
            
-            casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
-            data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
+                casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
+                data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
+            }
+            $("#casting_begin").find('span').remove();
+            $("#casting_begin").append("<span>"+casting_begin+"</span>");
+            $("#data_last").find('span').remove();
+            $("#data_last").append("<span>" + data_last+"</span>");
         }
-        $("#casting_begin").find('span').remove();
-        $("#casting_begin").append(casting_begin);
-        $("#data_last").find('span').remove();
-        $("#data_last").append(data_last);
-        
-       
+        Update();
 
-        //var ttimer = setInterval(function () {
-        //    dataAdapter.dataBind();
-        //}, 1000);
+        var ttimer = setInterval(function () {
+            dataAdapter.dataBind();
+            Update();
+        }, 5000);
 
     </script>
 
