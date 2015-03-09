@@ -1,67 +1,81 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-<title id='Description'>jqxChart Line Series Example. Each line serie is displaying data from a separate Array</title>
+<div id="OnLineButton"></div>
+<br />
 
-<div style='height: 600px; width: 682px;'>
+<h4>
+    <table style="width:50%">
+        <tr><td><em><font color="blue">Скорость пресса:</font></em></td> <td>7 м/с</td></tr>
+        <tr><td><em><font color="blue">Начало заливки:</font></em></td> <td><div id="casting_begin"></div></td></tr>
+        <tr><td><em><font color="blue">Последние данные:</font></em></td> <td><div id="data_last"></div></td></tr>
+    </table>
+</h4>
 
-    <div id='host' style="margin: 0 auto; width: 850px; height: 400px;">
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%">
 
-        <div id='jqxChart' style="width: 850px; height: 400px; position: relative; left: 0px; top: 0px;">
+                <table style="width:100%">
 
-        </div>
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td>123.34</td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td>123.34</td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td>123.34</td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td>123.34</td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_A' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
 
-    </div>
-
-</div>
-
-
+        <tr>
+            <td></td>
+            <td>
+                <div id='jqxChart_B' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+    </table>
 
     <script type="text/javascript">
 
+        function TransalteTime(value) {
+            var datestamp = new Date(value.getUTCFullYear(), value.getUTCMonth(), value.getDate(), value.getUTCHours(), value.getMinutes(), value.getUTCSeconds());
+            return datestamp;
+        }
+
         // prepare chart data as an array
         var source =
-
             {
-
                 dataType: "json",
                 async: false,
-
                 dataFields: [
-
-                    { name: 'RecordTime' },
-
+                    { name: 'RecordTime', type: 'date' },
+                    { name: 'CastingSessionId', type: 'date' },
                     { name: 'setMeterialA', type: 'float' },
-
                     { name: 'realMeterialA', type: 'float' },
-
                     { name: 'errorMeterialA', type: 'float' },
+                    { name: 'errorMeterialA_Percent', type: 'float' },
 
-                    { name: 'errorMeterialA_Percent', type: 'float' }
-                    
-                    
+                    { name: 'setMeterialB', type: 'float' },
+                    { name: 'realMeterialB', type: 'float' },
+                    { name: 'errorMeterialB', type: 'float' },
+                    { name: 'errorMeterialB_Percent', type: 'float' }
                 ],
-
                 id: 'Id',
-
                 url: 'GetDataJson'
-
-                 
-
-
             };
 
         var dataAdapter = new $.jqx.dataAdapter(source);
 
-            // prepare jqxChart settings
-
+        // prepare jqxChart settings
+        function CreateSetting(Title, Description, CodeSymbol) {
             var settings = {
 
-                title: "Материал A",
+                title: Title,
 
-                description: "Time spent in vigorous exercise",
+                description: Description,
 
                 enableAnimations: false,
 
@@ -88,39 +102,22 @@
 
                     formatFunction: function (value) {
 
-                        return $.jqx.dataFormat.formatdate(value, "HH:mm:ss");
+                        var datestamp = new Date(value.getUTCFullYear(), value.getUTCMonth(), value.getDate(), value.getUTCHours(), value.getMinutes(), value.getUTCSeconds());
+                        return $.jqx.dataFormat.formatdate(datestamp, "HH:mm:ss", 'en-us');
 
-                    },
- 
+                    }
+
                 },
 
                 colorScheme: 'scheme02',
-
-                //valueAxis:
-
-                //{
-                   
-
-
-                // //visible: true,
-
-                //    //title: { text: "Time in minutes" }
-
-                //},
 
                 seriesGroups:
 
                     [
 
                           {
-
                               type: 'area',
-
-                              series: [
-
-                                      { dataField: 'errorMeterialA_Percent', displayText: 'errorMeterialA_Percent', opacity: 0.7, lineWidth: 1 }
-
-                              ]
+                              series: [{ dataField: 'errorMeterial' + CodeSymbol + '_Percent', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1 }]
 
                           },
                         {
@@ -128,34 +125,47 @@
                             type: 'line',
 
                             series: [
-
-                                  { dataField: 'realMeterialA', displayText: 'realMeterialA', opacity: 0.7, lineWidth:1  },
-                                  { dataField: 'setMeterialA', displayText: 'setMeterialA', opacity: 1, lineWidth: 2 },
-
+                                  { dataField: 'realMeterial' + CodeSymbol, displayText: 'Фактическое', opacity: 0.7, lineWidth: 1 },
+                                  { dataField: 'setMeterial' + CodeSymbol, displayText: 'Установленное', opacity: 1, lineWidth: 2 },
                             ]
 
-                            }
-                            
-
-                      
-
+                        }
                     ]
 
             };
 
+            return settings;
+        }
 
 
-            // setup the chart
+        // setup the chart
+        $('#OnLineButton').jqxSwitchButton({ height: 'auto', width: 'auto', checked: true, onLabel: 'Онлайн', offLabel: 'Оффлайн' });
 
-            $('#jqxChart').jqxChart(settings);
+        $('#jqxChart_A').jqxChart(CreateSetting("Maтериал A", "", "A"));
+        $('#jqxChart_B').jqxChart(CreateSetting("Maтериал B", "", "B"));
 
-            var ttimer = setInterval(function () {
-               // $('#jqxChart').jqxChart().source = new $.jqx.dataAdapter(source);
-                //$('#jqxChart').jqxChart().
-                dataAdapter.dataBind();
-                //$('#jqxChart').jqxChart('update');
-               // $('#jqxChart').jqxChart(settings);
-            }, 1000);
+       
+
+        var casting_begin = "";
+        var data_last     = ""
+        if (dataAdapter.getrecords().length > 0)
+        {
+            var CastingSession = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].CastingSessionId;
+            var RecordTime = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].RecordTime;
+           
+            casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
+            data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
+        }
+        $("#casting_begin").find('span').remove();
+        $("#casting_begin").append(casting_begin);
+        $("#data_last").find('span').remove();
+        $("#data_last").append(data_last);
+        
+       
+
+        //var ttimer = setInterval(function () {
+        //    dataAdapter.dataBind();
+        //}, 1000);
 
     </script>
 
