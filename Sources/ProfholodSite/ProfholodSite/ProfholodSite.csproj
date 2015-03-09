@@ -37,6 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>false</IncludeIisSettings>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="itextsharp">
@@ -197,6 +198,7 @@
     <Compile Include="Controllers\PerformMaintenanceReportsController.cs" />
     <Compile Include="Controllers\PerformNoteRepairsController.cs" />
     <Compile Include="Controllers\PeriodicalsController.cs" />
+    <Compile Include="Controllers\RealTimeViewerController.cs" />
     <Compile Include="Controllers\ReportsSummaryController.cs" />
     <Compile Include="Controllers\TypeOfFaultsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -268,6 +270,7 @@
     <None Include="Properties\PublishProfiles\profholod %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\profholod.pubxml" />
     <None Include="Properties\PublishProfiles\pservice.pubxml" />
+    <None Include="Properties\PublishProfiles\test.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -289,7 +292,6 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <Content Include="App_Data\jquery-ui-1.11.2.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.ajaxhelper.js" />
@@ -776,8 +778,11 @@
     <Content Include="Views\FileSystem\Index.cshtml" />
     <Content Include="Views\FileSystem\Upload.cshtml" />
     <Content Include="Views\ReportsSummary\ReportMaintanace.cshtml" />
+    <Content Include="Views\RealTimeViewer\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
