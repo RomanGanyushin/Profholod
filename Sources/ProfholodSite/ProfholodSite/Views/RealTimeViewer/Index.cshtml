@@ -142,7 +142,12 @@
 
     <script type="text/javascript">
 
+        var is_degug = true;
         function TransalteTime(value) {
+            if (is_degug)
+            {
+                return value;
+            }
             var datestamp = new Date(value.getUTCFullYear(), value.getUTCMonth(), value.getDate(), value.getUTCHours(), value.getMinutes(), value.getUTCSeconds());
             return datestamp;
         }
@@ -166,14 +171,12 @@
             return source;
         }
 
-        //var dataAdapters = new Map();
+       
         var dataLocalAdapters = new Map();
 
         // prepare jqxChart settings
         function CreateSetting(Title, Description, CodeSymbol) {
 
-           // var dataAdapter = new $.jqx.dataAdapter(CreateSource(CodeSymbol));
-           // dataAdapters.set(CodeSymbol, dataAdapter);
             dataLocalAdapters.set(CodeSymbol, []);
 
             var settings = {
@@ -309,19 +312,18 @@
         function UpdateChart(Symbol)
         {
             var lastDate = null;
+            var start = new Date();
             if (dataLocalAdapters.get(Symbol).length > 0)
             {
                 var _lastDate = dataLocalAdapters.get(Symbol)[dataLocalAdapters.get(Symbol).length - 1].D;     
-                lastDate = $.jqx.dataFormat.formatdate(/*TransalteTime(*/_lastDate/*)*/, "dd-MM-yyyy HH:mm:ss", 'en-us');
+                lastDate = $.jqx.dataFormat.formatdate(TransalteTime(_lastDate), "dd-MM-yyyy HH:mm:ss", 'en-us');
            
             }
 
-            alert(lastDate);
+ 
             var data = new $.jqx.dataAdapter(CreateSource(Symbol, lastDate));
             data.dataBind();
-            alert(data.getrecords().length);
 
-            
             for (var i = 0; i < data.getrecords().length; i++) {
                 var last = data.getrecords()[i];
                 dataLocalAdapters.get(Symbol).push({ D: last.D, S: last.S, R: last.R, E: last.E, P: last.P });
@@ -331,9 +333,13 @@
             {
                 dataLocalAdapters.get(Symbol).splice(0, dataLocalAdapters.get(Symbol).length - 1000);
             }
-          
-
+         
             $('#jqxChart_' + Symbol).jqxChart('update');
+
+            $('#jqxChart_' + Symbol).jqxChart('getInstance').
+                description = "L: " + lastDate +
+                ",Update count = " + data.getrecords().length+
+                ",Eclape time = " + (new Date() - start)+ " ms";
            
         }
 
