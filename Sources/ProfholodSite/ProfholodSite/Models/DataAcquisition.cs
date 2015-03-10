@@ -138,6 +138,35 @@ namespace ProfholodSite.DataAcquisition
        {
            get { return (setMeterialB == 0) ? 0 : (100.0 * errorMeterialB / setMeterialB); }
        }
+
+       virtual public double errorMeterialC_Percent
+       {
+           get { return (setMeterialC == 0) ? 0 : (100.0 * errorMeterialC / setMeterialC); }
+       }
+
+       virtual public double errorMeterialD_Percent
+       {
+           get { return (setMeterialD == 0) ? 0 : (100.0 * errorMeterialD / setMeterialD); }
+       }
+
+       virtual public double errorMeterialE_Percent
+       {
+           get { return (setMeterialE == 0) ? 0 : (100.0 * errorMeterialE / setMeterialE); }
+       }
+
+       virtual public double errorMeterialF_Percent
+       {
+           get { return (setMeterialF == 0) ? 0 : (100.0 * errorMeterialF / setMeterialF); }
+       }
+
+       virtual public double errorMeterialN_Percent
+       {
+           get { return (setMeterialN == 0) ? 0 : (100.0 * errorMeterialN / setMeterialN); }
+       }
+       virtual public double errorMeterialNuc_Percent
+       {
+           get { return (setMeterialNuc == 0) ? 0 : (100.0 * errorMeterialNuc / setMeterialNuc); }
+       }
     }
 
     public class DataAcquisitionContext : DbContext

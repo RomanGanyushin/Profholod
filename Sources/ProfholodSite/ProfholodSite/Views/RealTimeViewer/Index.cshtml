@@ -7,9 +7,9 @@
 
 <h4>
     <table style="width:50%">
-        <tr><td><em><font color="blue">Скорость пресса:</font></em></td> <td>7 м/с</td></tr>
-        <tr><td><em><font color="blue">Начало заливки:</font></em></td> <td><div id="casting_begin"></div></td></tr>
-        <tr><td><em><font color="blue">Последние данные:</font></em></td> <td><div id="data_last"></div></td></tr>
+        <tr><td><em><font color="blue">Скорость пресса:</font></em></td> <td>- - -</td></tr>
+        <tr><td><em><font color="blue">Начало заливки:</font></em></td> <td><div id="casting_begin"><span></span></div></td></tr>
+        <tr><td><em><font color="blue">Последние данные:</font></em></td> <td><div id="data_last"><span></span></div></td></tr>
     </table>
 </h4>
 
@@ -18,11 +18,10 @@
             <td style="width:30%">
 
                 <table style="width:100%">
-
-                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td>123.34</td></tr>
-                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td>123.34</td></tr>
-                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td>123.34</td></tr>
-                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td>123.34</td></tr>
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MA_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MA_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MA_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MA_ErrPrc"><span></span></div></td></tr>
                 </table>
             </td>
             <td>
@@ -31,11 +30,111 @@
         </tr>
 
         <tr>
-            <td></td>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MB_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MB_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MB_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MB_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
             <td>
                 <div id='jqxChart_B' style="width: 100%; height: 400px;"></div>
             </td>
         </tr>
+
+        <tr>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MC_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MC_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MC_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MC_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_C' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MD_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MD_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MD_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MD_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_D' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="ME_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="ME_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="ME_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="ME_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_E' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MF_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MF_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MF_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MF_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_F' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MN_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MN_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MN_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MN_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_N' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width:30%">
+
+                <table style="width:100%">
+                    <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MNuc_Real"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MNuc_Set"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MNuc_ErrAbs"><span></span></div></td></tr>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MNuc_ErrPrc"><span></span></div></td></tr>
+                </table>
+            </td>
+            <td>
+                <div id='jqxChart_Nuc' style="width: 100%; height: 400px;"></div>
+            </td>
+        </tr>
+
     </table>
 
     <script type="text/javascript">
@@ -61,7 +160,37 @@
                     { name: 'setMeterialB', type: 'float' },
                     { name: 'realMeterialB', type: 'float' },
                     { name: 'errorMeterialB', type: 'float' },
-                    { name: 'errorMeterialB_Percent', type: 'float' }
+                    { name: 'errorMeterialB_Percent', type: 'float' },
+
+                     { name: 'setMeterialC', type: 'float' },
+                    { name: 'realMeterialC', type: 'float' },
+                    { name: 'errorMeterialC', type: 'float' },
+                    { name: 'errorMeterialC_Percent', type: 'float' },
+
+                     { name: 'setMeterialD', type: 'float' },
+                    { name: 'realMeterialD', type: 'float' },
+                    { name: 'errorMeterialD', type: 'float' },
+                    { name: 'errorMeterialD_Percent', type: 'float' },
+
+                     { name: 'setMeterialE', type: 'float' },
+                    { name: 'realMeterialE', type: 'float' },
+                    { name: 'errorMeterialE', type: 'float' },
+                    { name: 'errorMeterialE_Percent', type: 'float' },
+
+                     { name: 'setMeterialF', type: 'float' },
+                    { name: 'realMeterialF', type: 'float' },
+                    { name: 'errorMeterialF', type: 'float' },
+                    { name: 'errorMeterialF_Percent', type: 'float' },
+
+                     { name: 'setMeterialN', type: 'float' },
+                    { name: 'realMeterialN', type: 'float' },
+                    { name: 'errorMeterialN', type: 'float' },
+                    { name: 'errorMeterialN_Percent', type: 'float' },
+
+                    { name: 'setMeterialNuc', type: 'float' },
+                    { name: 'realMeterialNuc', type: 'float' },
+                    { name: 'errorMeterialNuc', type: 'float' },
+                    { name: 'errorMeterialNuc_Percent', type: 'float' },
                 ],
                 id: 'Id',
                 url: 'GetDataJson'
@@ -141,31 +270,96 @@
 
         $('#jqxChart_A').jqxChart(CreateSetting("Maтериал A", "", "A"));
         $('#jqxChart_B').jqxChart(CreateSetting("Maтериал B", "", "B"));
+        $('#jqxChart_C').jqxChart(CreateSetting("Maтериал C", "", "C"));
+        $('#jqxChart_D').jqxChart(CreateSetting("Maтериал D", "", "D"));
+        $('#jqxChart_E').jqxChart(CreateSetting("Maтериал E", "", "E"));
+        $('#jqxChart_F').jqxChart(CreateSetting("Maтериал F", "", "F"));
+        $('#jqxChart_N').jqxChart(CreateSetting("Maтериал N", "", "N"));
+        $('#jqxChart_Nuc').jqxChart(CreateSetting("Maтериал Nuc", "", "Nuc"));
 
        
         function Update()
         {
+            function Reset(l)
+            {
+                $("#M"+l+"_Real").find('span').remove();
+                $("#M"+l+"_Set").find('span').remove();
+                $("#M" + l + "_ErrAbs").find('span').remove();
+                $("#M" + l + "_ErrPrc").find('span').remove();
+            }
+
             var casting_begin = "";
-            var data_last     = ""
+            var data_last = "";
+
+            Reset("A"); Reset("B"); Reset("C");
+            Reset("D"); Reset("E"); Reset("F");
+            Reset("N"); Reset("Nuc");
+
             if (dataAdapter.getrecords().length > 0)
             {
-                var CastingSession = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].CastingSessionId;
-                var RecordTime = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1].RecordTime;
+                var last = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1];
+                var CastingSession = last.CastingSessionId;
+                var RecordTime = last.RecordTime;
            
                 casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
                 data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
+                
+                $("#MA_Real").append("<span>" + last.realMeterialA.toFixed(4) + "</span>");
+                $("#MA_Set").append("<span>" + last.setMeterialA.toFixed(4) + "</span>");
+                $("#MA_ErrAbs").append("<span>" + last.errorMeterialA.toFixed(4) + "</span>");
+                $("#MA_ErrPrc").append("<span>" + last.errorMeterialA_Percent.toFixed(4) + "</span>");
+
+                $("#MB_Real").append("<span>" + last.realMeterialB.toFixed(4) + "</span>");
+                $("#MB_Set").append("<span>" + last.setMeterialB.toFixed(4) + "</span>");
+                $("#MB_ErrAbs").append("<span>" + last.errorMeterialB.toFixed(4) + "</span>");
+                $("#MB_ErrPrc").append("<span>" + last.errorMeterialB_Percent.toFixed(4) + "</span>");
+
+                $("#MC_Real").append("<span>" + last.realMeterialC.toFixed(4) + "</span>");
+                $("#MC_Set").append("<span>" + last.setMeterialC.toFixed(4) + "</span>");
+                $("#MC_ErrAbs").append("<span>" + last.errorMeterialC.toFixed(4) + "</span>");
+                $("#MC_ErrPrc").append("<span>" + last.errorMeterialC_Percent.toFixed(4) + "</span>");
+
+                $("#MD_Real").append("<span>" + last.realMeterialD.toFixed(4) + "</span>");
+                $("#MD_Set").append("<span>" + last.setMeterialD.toFixed(4) + "</span>");
+                $("#MD_ErrAbs").append("<span>" + last.errorMeterialD.toFixed(4) + "</span>");
+                $("#MD_ErrPrc").append("<span>" + last.errorMeterialD_Percent.toFixed(4) + "</span>");
+
+                $("#ME_Real").append("<span>" + last.realMeterialE.toFixed(4) + "</span>");
+                $("#ME_Set").append("<span>" + last.setMeterialE.toFixed(4) + "</span>");
+                $("#ME_ErrAbs").append("<span>" + last.errorMeterialE.toFixed(4) + "</span>");
+                $("#ME_ErrPrc").append("<span>" + last.errorMeterialE_Percent.toFixed(4) + "</span>");
+
+                $("#MF_Real").append("<span>" + last.realMeterialF.toFixed(4) + "</span>");
+                $("#MF_Set").append("<span>" + last.setMeterialF.toFixed(4) + "</span>");
+                $("#MF_ErrAbs").append("<span>" + last.errorMeterialF.toFixed(4) + "</span>");
+                $("#MF_ErrPrc").append("<span>" + last.errorMeterialF_Percent.toFixed(4) + "</span>");
+
+                $("#MN_Real").append("<span>" + last.realMeterialN.toFixed(4) + "</span>");
+                $("#MN_Set").append("<span>" + last.setMeterialN.toFixed(4) + "</span>");
+                $("#MN_ErrAbs").append("<span>" + last.errorMeterialN.toFixed(4) + "</span>");
+                $("#MN_ErrPrc").append("<span>" + last.errorMeterialN_Percent.toFixed(4) + "</span>");
+
+                $("#MNuc_Real").append("<span>" + last.realMeterialNuc.toFixed(4) + "</span>");
+                $("#MNuc_Set").append("<span>" + last.setMeterialNuc.toFixed(4) + "</span>");
+                $("#MNuc_ErrAbs").append("<span>" + last.errorMeterialNuc.toFixed(4) + "</span>");
+                $("#MNuc_ErrPrc").append("<span>" + last.errorMeterialNuc_Percent.toFixed(4) + "</span>");
+
+
             }
             $("#casting_begin").find('span').remove();
             $("#casting_begin").append("<span>"+casting_begin+"</span>");
             $("#data_last").find('span').remove();
-            $("#data_last").append("<span>" + data_last+"</span>");
+            $("#data_last").append("<span>" + data_last + "</span>");
+
+            
+           
         }
         Update();
 
-        var ttimer = setInterval(function () {
-            dataAdapter.dataBind();
-            Update();
-        }, 5000);
+        //var ttimer = setInterval(function () {
+        //    dataAdapter.dataBind();
+        //    Update();
+        //}, 5000);
 
     </script>
 
