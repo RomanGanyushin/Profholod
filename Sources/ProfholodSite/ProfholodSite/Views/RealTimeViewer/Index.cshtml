@@ -2,7 +2,7 @@
     ViewBag.Title = "Index";
 }
 
-<div id="OnLineButton"></div>
+
 <br />
 
 <h4>
@@ -12,6 +12,7 @@
         <tr><td><em><font color="blue">Последние данные:</font></em></td> <td><div id="data_last"><span></span></div></td></tr>
     </table>
 </h4>
+<div id="OnLineButton"></div>
 
     <table style="width:100%">
         <tr>
@@ -21,8 +22,10 @@
                     <tr><td style="width:50%"><em><font color="blue">Подача:</font></em></td> <td><div id="MA_Real"><span></span></div></td></tr>
                     <tr><td><em><font color="blue">Уставка:</font></em></td> <td><div id="MA_Set"><span></span></div></td></tr>
                     <tr><td><em><font color="blue">Ошибка(абс):</font></em></td> <td><div id="MA_ErrAbs"><span></span></div></td></tr>
-                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MA_ErrPrc"><span></span></div></td></tr>
-                </table>
+                    <tr><td><em><font color="blue">Ошибка(%):</font></em></td> <td><div id="MA_ErrPrc"><span></span></div></td></tr>          
+                 </table>
+
+               
             </td>
             <td>
                 <div id='jqxChart_A' style="width: 100%; height: 400px;"></div>
@@ -145,7 +148,7 @@
         }
 
         // prepare chart data as an array
-        function CreateSource(postifx) {
+        function CreateSource(postifx, lastDate) {
             var source =
                 {
                     dataType: "json",
@@ -158,18 +161,20 @@
                         { name: 'P', type: 'float' }
                     ],
                     id: 'Id',
-                    url: 'GetDataJson' + "?Material=" + postifx
+                    url: 'GetDataJson' + "?Material=" + postifx + "&LastDate=" + lastDate
                 };
             return source;
         }
 
-        var dataAdapters = new Map();
+        //var dataAdapters = new Map();
+        var dataLocalAdapters = new Map();
 
         // prepare jqxChart settings
         function CreateSetting(Title, Description, CodeSymbol) {
 
-            var dataAdapter = new $.jqx.dataAdapter(CreateSource(CodeSymbol));
-            dataAdapters.set(CodeSymbol,dataAdapter);
+           // var dataAdapter = new $.jqx.dataAdapter(CreateSource(CodeSymbol));
+           // dataAdapters.set(CodeSymbol, dataAdapter);
+            dataLocalAdapters.set(CodeSymbol, []);
 
             var settings = {
 
@@ -187,7 +192,7 @@
 
                 titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
 
-                source: dataAdapter,
+                source: dataLocalAdapters.get(CodeSymbol),
 
                 xAxis:
 
@@ -237,7 +242,7 @@
 
 
         // setup the chart
-        $('#OnLineButton').jqxSwitchButton({ height: 'auto', width: 'auto', checked: true, onLabel: 'Онлайн', offLabel: 'Оффлайн' });
+        $('#OnLineButton').jqxSwitchButton({ height: '40px', width: '150px', checked: true, onLabel: 'Онлайн', offLabel: 'Оффлайн' });
 
         $('#jqxChart_A').jqxChart(CreateSetting("Maтериал A", "", "A"));
         $('#jqxChart_B').jqxChart(CreateSetting("Maтериал B", "", "B"));
@@ -292,64 +297,51 @@
            
                 //casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
                 //data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
-                
-                /*
-                $("#MA_Real").append("<span>" + last.realMeterialA.toFixed(4) + "</span>");
-                $("#MA_Set").append("<span>" + last.setMeterialA.toFixed(4) + "</span>");
-                $("#MA_ErrAbs").append("<span>" + last.errorMeterialA.toFixed(4) + "</span>");
-                $("#MA_ErrPrc").append("<span>" + last.errorMeterialA_Percent.toFixed(4) + "</span>");
-
-                $("#MB_Real").append("<span>" + last.realMeterialB.toFixed(4) + "</span>");
-                $("#MB_Set").append("<span>" + last.setMeterialB.toFixed(4) + "</span>");
-                $("#MB_ErrAbs").append("<span>" + last.errorMeterialB.toFixed(4) + "</span>");
-                $("#MB_ErrPrc").append("<span>" + last.errorMeterialB_Percent.toFixed(4) + "</span>");
-
-                $("#MC_Real").append("<span>" + last.realMeterialC.toFixed(4) + "</span>");
-                $("#MC_Set").append("<span>" + last.setMeterialC.toFixed(4) + "</span>");
-                $("#MC_ErrAbs").append("<span>" + last.errorMeterialC.toFixed(4) + "</span>");
-                $("#MC_ErrPrc").append("<span>" + last.errorMeterialC_Percent.toFixed(4) + "</span>");
-
-                $("#MD_Real").append("<span>" + last.realMeterialD.toFixed(4) + "</span>");
-                $("#MD_Set").append("<span>" + last.setMeterialD.toFixed(4) + "</span>");
-                $("#MD_ErrAbs").append("<span>" + last.errorMeterialD.toFixed(4) + "</span>");
-                $("#MD_ErrPrc").append("<span>" + last.errorMeterialD_Percent.toFixed(4) + "</span>");
-
-                $("#ME_Real").append("<span>" + last.realMeterialE.toFixed(4) + "</span>");
-                $("#ME_Set").append("<span>" + last.setMeterialE.toFixed(4) + "</span>");
-                $("#ME_ErrAbs").append("<span>" + last.errorMeterialE.toFixed(4) + "</span>");
-                $("#ME_ErrPrc").append("<span>" + last.errorMeterialE_Percent.toFixed(4) + "</span>");
-
-                $("#MF_Real").append("<span>" + last.realMeterialF.toFixed(4) + "</span>");
-                $("#MF_Set").append("<span>" + last.setMeterialF.toFixed(4) + "</span>");
-                $("#MF_ErrAbs").append("<span>" + last.errorMeterialF.toFixed(4) + "</span>");
-                $("#MF_ErrPrc").append("<span>" + last.errorMeterialF_Percent.toFixed(4) + "</span>");
-
-                $("#MN_Real").append("<span>" + last.realMeterialN.toFixed(4) + "</span>");
-                $("#MN_Set").append("<span>" + last.setMeterialN.toFixed(4) + "</span>");
-                $("#MN_ErrAbs").append("<span>" + last.errorMeterialN.toFixed(4) + "</span>");
-                $("#MN_ErrPrc").append("<span>" + last.errorMeterialN_Percent.toFixed(4) + "</span>");
-
-                $("#MNuc_Real").append("<span>" + last.realMeterialNuc.toFixed(4) + "</span>");
-                $("#MNuc_Set").append("<span>" + last.setMeterialNuc.toFixed(4) + "</span>");
-                $("#MNuc_ErrAbs").append("<span>" + last.errorMeterialNuc.toFixed(4) + "</span>");
-                $("#MNuc_ErrPrc").append("<span>" + last.errorMeterialNuc_Percent.toFixed(4) + "</span>");
-                */
-
             }
             $("#casting_begin").find('span').remove();
             $("#casting_begin").append("<span>"+casting_begin+"</span>");
             $("#data_last").find('span').remove();
             $("#data_last").append("<span>" + data_last + "</span>");
+     
+        }
+        //Update();
+
+        function UpdateChart(Symbol)
+        {
+            var lastDate = null;
+            if (dataLocalAdapters.get(Symbol).length > 0)
+            {
+                var _lastDate = dataLocalAdapters.get(Symbol)[dataLocalAdapters.get(Symbol).length - 1].D;     
+                lastDate = $.jqx.dataFormat.formatdate(/*TransalteTime(*/_lastDate/*)*/, "dd-MM-yyyy HH:mm:ss", 'en-us');
+           
+            }
+
+            alert(lastDate);
+            var data = new $.jqx.dataAdapter(CreateSource(Symbol, lastDate));
+            data.dataBind();
+            alert(data.getrecords().length);
 
             
+            for (var i = 0; i < data.getrecords().length; i++) {
+                var last = data.getrecords()[i];
+                dataLocalAdapters.get(Symbol).push({ D: last.D, S: last.S, R: last.R, E: last.E, P: last.P });
+            }
+
+            if (dataLocalAdapters.get(Symbol).length > 1000)
+            {
+                dataLocalAdapters.get(Symbol).splice(0, dataLocalAdapters.get(Symbol).length - 1000);
+            }
+          
+
+            $('#jqxChart_' + Symbol).jqxChart('update');
            
         }
-        Update();
 
-        //var ttimer = setInterval(function () {
-        //    dataAdapter.dataBind();
-        //    Update();
-        //}, 5000);
+        var ttimer = setTimeout(function () {
+            UpdateChart("A");
+            setTimeout(arguments.callee, 5000);
+            //Update();
+        }, 5000);
 
     </script>
 
