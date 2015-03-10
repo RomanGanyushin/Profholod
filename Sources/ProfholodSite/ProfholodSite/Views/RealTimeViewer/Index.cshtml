@@ -145,61 +145,32 @@
         }
 
         // prepare chart data as an array
-        var source =
-            {
-                dataType: "json",
-                async: false,
-                dataFields: [
-                    { name: 'RecordTime', type: 'date' },
-                    { name: 'CastingSessionId', type: 'date' },
-                    { name: 'setMeterialA', type: 'float' },
-                    { name: 'realMeterialA', type: 'float' },
-                    { name: 'errorMeterialA', type: 'float' },
-                    { name: 'errorMeterialA_Percent', type: 'float' },
+        function CreateSource(postifx) {
+            var source =
+                {
+                    dataType: "json",
+                    async: false,
+                    dataFields: [
+                        { name: 'D', type: 'date' },
+                        { name: 'S', type: 'float' },
+                        { name: 'R', type: 'float' },
+                        { name: 'E', type: 'float' },
+                        { name: 'P', type: 'float' }
+                    ],
+                    id: 'Id',
+                    url: 'GetDataJson' + "?Material=" + postifx
+                };
+            return source;
+        }
 
-                    { name: 'setMeterialB', type: 'float' },
-                    { name: 'realMeterialB', type: 'float' },
-                    { name: 'errorMeterialB', type: 'float' },
-                    { name: 'errorMeterialB_Percent', type: 'float' },
-
-                     { name: 'setMeterialC', type: 'float' },
-                    { name: 'realMeterialC', type: 'float' },
-                    { name: 'errorMeterialC', type: 'float' },
-                    { name: 'errorMeterialC_Percent', type: 'float' },
-
-                     { name: 'setMeterialD', type: 'float' },
-                    { name: 'realMeterialD', type: 'float' },
-                    { name: 'errorMeterialD', type: 'float' },
-                    { name: 'errorMeterialD_Percent', type: 'float' },
-
-                     { name: 'setMeterialE', type: 'float' },
-                    { name: 'realMeterialE', type: 'float' },
-                    { name: 'errorMeterialE', type: 'float' },
-                    { name: 'errorMeterialE_Percent', type: 'float' },
-
-                     { name: 'setMeterialF', type: 'float' },
-                    { name: 'realMeterialF', type: 'float' },
-                    { name: 'errorMeterialF', type: 'float' },
-                    { name: 'errorMeterialF_Percent', type: 'float' },
-
-                     { name: 'setMeterialN', type: 'float' },
-                    { name: 'realMeterialN', type: 'float' },
-                    { name: 'errorMeterialN', type: 'float' },
-                    { name: 'errorMeterialN_Percent', type: 'float' },
-
-                    { name: 'setMeterialNuc', type: 'float' },
-                    { name: 'realMeterialNuc', type: 'float' },
-                    { name: 'errorMeterialNuc', type: 'float' },
-                    { name: 'errorMeterialNuc_Percent', type: 'float' },
-                ],
-                id: 'Id',
-                url: 'GetDataJson'
-            };
-
-        var dataAdapter = new $.jqx.dataAdapter(source);
+        var dataAdapters = new Map();
 
         // prepare jqxChart settings
         function CreateSetting(Title, Description, CodeSymbol) {
+
+            var dataAdapter = new $.jqx.dataAdapter(CreateSource(CodeSymbol));
+            dataAdapters.set(CodeSymbol,dataAdapter);
+
             var settings = {
 
                 title: Title,
@@ -222,7 +193,7 @@
 
                 {
 
-                    dataField: 'RecordTime',
+                    dataField: 'D',
                     type: 'date',
                     baseUnit: 'second',
                     flip: false,
@@ -243,8 +214,8 @@
                     [
 
                           {
-                              type: 'area',
-                              series: [{ dataField: 'errorMeterial' + CodeSymbol + '_Percent', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1 }]
+                              type: 'line',
+                              series: [{ dataField: 'P', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1 }]
 
                           },
                         {
@@ -252,8 +223,8 @@
                             type: 'line',
 
                             series: [
-                                  { dataField: 'realMeterial' + CodeSymbol, displayText: 'Фактическое', opacity: 0.7, lineWidth: 1 },
-                                  { dataField: 'setMeterial' + CodeSymbol, displayText: 'Установленное', opacity: 1, lineWidth: 2 },
+                                  { dataField: 'R', displayText: 'Фактическое', opacity: 0.7, lineWidth: 1 },
+                                  { dataField: 'S' + CodeSymbol, displayText: 'Установленное', opacity: 1, lineWidth: 2 },
                             ]
 
                         }
@@ -288,22 +259,41 @@
                 $("#M" + l + "_ErrPrc").find('span').remove();
             }
 
+            function Set(l, r, s, e, p)
+            { 
+
+                $("#M" + l + "_Real").append("<span>" + r + "</span>");
+                $("#M" + l + "_Set").append("<span>" + s + "</span>");
+                $("#M" + l + "_ErrAbs").append("<span>" + e + "</span>");
+                $("#M" + l + "_ErrPrc").append("<span>" + p + "</span>");
+
+            }
+
             var casting_begin = "";
             var data_last = "";
 
-            Reset("A"); Reset("B"); Reset("C");
-            Reset("D"); Reset("E"); Reset("F");
-            Reset("N"); Reset("Nuc");
 
-            if (dataAdapter.getrecords().length > 0)
+            dataAdapters.forEach(function (item, key, mapObj) {
+                Reset(key);
+                if (item != null)
+                    if (item.getrecords().length > 0)
+                    {
+                        var last = item.getrecords()[item.getrecords().length - 1];
+                        Set(key, last.R, last.S, last.E,last.P);
+                    }
+               
+            });
+
+            //if (dataAdapter.getrecords().length > 0)
             {
-                var last = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1];
-                var CastingSession = last.CastingSessionId;
-                var RecordTime = last.RecordTime;
+                //var last = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1];
+                //var CastingSession = "";
+               // var RecordTime = last.D;
            
-                casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
-                data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
+                //casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
+                //data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
                 
+                /*
                 $("#MA_Real").append("<span>" + last.realMeterialA.toFixed(4) + "</span>");
                 $("#MA_Set").append("<span>" + last.setMeterialA.toFixed(4) + "</span>");
                 $("#MA_ErrAbs").append("<span>" + last.errorMeterialA.toFixed(4) + "</span>");
@@ -343,7 +333,7 @@
                 $("#MNuc_Set").append("<span>" + last.setMeterialNuc.toFixed(4) + "</span>");
                 $("#MNuc_ErrAbs").append("<span>" + last.errorMeterialNuc.toFixed(4) + "</span>");
                 $("#MNuc_ErrPrc").append("<span>" + last.errorMeterialNuc_Percent.toFixed(4) + "</span>");
-
+                */
 
             }
             $("#casting_begin").find('span').remove();
