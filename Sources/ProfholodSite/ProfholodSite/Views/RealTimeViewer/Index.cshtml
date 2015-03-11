@@ -142,24 +142,15 @@
 
     <script type="text/javascript">
 
-        var is_degug = true;
-        function TransalteTime(value) {
-            if (is_degug)
-            {
-                return value;
-            }
-            var datestamp = new Date(value.getUTCFullYear(), value.getUTCMonth(), value.getDate(), value.getUTCHours(), value.getMinutes(), value.getUTCSeconds());
-            return datestamp;
-        }
-
+     
         // prepare chart data as an array
         function CreateSource(postifx, lastDate) {
             var source =
                 {
                     dataType: "json",
-                    async: false,
+                    async: true,
                     dataFields: [
-                        { name: 'D', type: 'date' },
+                        { name: 'D', type: 'string' },
                         { name: 'S', type: 'float' },
                         { name: 'R', type: 'float' },
                         { name: 'E', type: 'float' },
@@ -209,7 +200,7 @@
                     showToolTips: false,
 
                     formatFunction: function (value) {
-                       return $.jqx.dataFormat.formatdate(TransalteTime(value), "HH:mm:ss", 'en-us');
+                       return $.jqx.dataFormat.formatdate(value, "HH:mm:ss", 'en-us');
 
                     }
 
@@ -309,45 +300,73 @@
         }
         //Update();
 
+     
+        var next = new Map();
+
         function UpdateChart(Symbol)
         {
+            next.set(Symbol,false);
+
             var lastDate = null;
             var start = new Date();
             if (dataLocalAdapters.get(Symbol).length > 0)
             {
                 var _lastDate = dataLocalAdapters.get(Symbol)[dataLocalAdapters.get(Symbol).length - 1].D;     
-                lastDate = $.jqx.dataFormat.formatdate(TransalteTime(_lastDate), "dd-MM-yyyy HH:mm:ss", 'en-us');
+                lastDate = $.jqx.dataFormat.formatdate(_lastDate, "dd-MM-yyyy HH:mm:ss", 'en-us');
            
             }
 
- 
-            var data = new $.jqx.dataAdapter(CreateSource(Symbol, lastDate));
+            var data = new $.jqx.dataAdapter(CreateSource(Symbol, lastDate),
+             {
+                 loadComplete: function (records) {
+
+                    
+                     for (var i = 0; i < data.getrecords().length; i++) {
+                         var last = data.getrecords()[i];
+                         var _date = new Date(Date.parse(last.D));
+
+                         dataLocalAdapters.get(Symbol).push({ D: _date, S: last.S, R: last.R, E: last.E, P: last.P });
+                     }
+
+                     if (dataLocalAdapters.get(Symbol).length > 100) {
+                         dataLocalAdapters.get(Symbol).splice(0, dataLocalAdapters.get(Symbol).length - 100);
+                     }
+
+                     $('#jqxChart_' + Symbol).jqxChart('update');
+
+                     $('#jqxChart_' + Symbol).jqxChart('getInstance').
+                         description = "L: " + lastDate +
+                         ",Update count = " + data.getrecords().length +
+                         ",Eclape time = " + (new Date() - start) + " ms";
+                     next.set(Symbol, true);
+                 }
+             });
+           
+            
             data.dataBind();
-
-            for (var i = 0; i < data.getrecords().length; i++) {
-                var last = data.getrecords()[i];
-                dataLocalAdapters.get(Symbol).push({ D: last.D, S: last.S, R: last.R, E: last.E, P: last.P });
-            }
-
-            if (dataLocalAdapters.get(Symbol).length > 1000)
-            {
-                dataLocalAdapters.get(Symbol).splice(0, dataLocalAdapters.get(Symbol).length - 1000);
-            }
-         
-            $('#jqxChart_' + Symbol).jqxChart('update');
-
-            $('#jqxChart_' + Symbol).jqxChart('getInstance').
-                description = "L: " + lastDate +
-                ",Update count = " + data.getrecords().length+
-                ",Eclape time = " + (new Date() - start)+ " ms";
-           
         }
 
+        
         var ttimer = setTimeout(function () {
-            UpdateChart("A");
-            setTimeout(arguments.callee, 5000);
+            if (next.get("A") == null || next.get("A")) UpdateChart("A");
+            if (next.get("B") == null || next.get("B")) UpdateChart("B");
+            if (next.get("C") == null || next.get("C")) UpdateChart("C");
+            if (next.get("D") == null || next.get("D")) UpdateChart("D");
+            if (next.get("E") == null || next.get("E")) UpdateChart("E");
+            if (next.get("F") == null || next.get("F")) UpdateChart("F");
+            if (next.get("N") == null || next.get("N")) UpdateChart("N");
+            if (next.get("Nuc") == null || next.get("Nuc")) UpdateChart("Nuc");
+            
+
+            //UpdateChart("A");
+            //UpdateChart("B");
+            //  UpdateChart("C"); UpdateChart("D");
+            //  UpdateChart("E"); UpdateChart("F");
+            //  UpdateChart("N"); UpdateChart("Nuc");
+              setTimeout(arguments.callee, 5000);
             //Update();
         }, 5000);
+      
 
     </script>
 
