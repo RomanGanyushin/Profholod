@@ -144,20 +144,21 @@
 
      
         // prepare chart data as an array
-        function CreateSource(postifx, lastDate) {
+        function CreateSource(lastDate, LastCount) {
             var source =
                 {
                     dataType: "json",
                     async: true,
                     dataFields: [
-                        { name: 'D', type: 'string' },
-                        { name: 'S', type: 'float' },
-                        { name: 'R', type: 'float' },
-                        { name: 'E', type: 'float' },
-                        { name: 'P', type: 'float' }
+                        { name: 'D'},
+                        { name: 'R'},
+                        { name: 'S'},
+                        { name: 'E'},
+                        { name: 'P'},
+                        { name: 'L'}
                     ],
-                    id: 'Id',
-                    url: 'GetDataJson' + "?Material=" + postifx + "&LastDate=" + lastDate
+                
+                    url: 'GetDataJson' + "?LastDate=" + lastDate + "&LastCount=" + LastCount
                 };
             return source;
         }
@@ -205,8 +206,8 @@
                     }
 
                 },
-
-                colorScheme: 'scheme02',
+                
+               // colorScheme: 'scheme02',
 
                 seriesGroups:
 
@@ -214,7 +215,13 @@
 
                           {
                               type: 'line',
-                              series: [{ dataField: 'P', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1 }]
+
+                              valueAxis:
+                                {
+                                    visible: true,
+                                    position: 'right'                             
+                                },
+                              series: [{ dataField: 'P', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1, lineColor: 'red', lineColorSelected: 'red', fillColor: 'red' }],                           
 
                           },
                         {
@@ -222,10 +229,9 @@
                             type: 'line',
 
                             series: [
-                                  { dataField: 'R', displayText: 'Фактическое', opacity: 0.7, lineWidth: 1 },
-                                  { dataField: 'S' + CodeSymbol, displayText: 'Установленное', opacity: 1, lineWidth: 2 },
+                                  { dataField: 'R', displayText: 'Фактическое', opacity: 0.7, lineWidth: 1, lineColor: 'green', lineColorSelected: 'green', fillColor: 'green' },
+                                  { dataField: 'S', displayText: 'Установленное', opacity: 1, lineWidth: 2, lineColor: 'yellow', lineColorSelected: 'yellow', fillColor: 'yellow' },
                             ]
-
                         }
                     ]
 
@@ -247,125 +253,92 @@
         $('#jqxChart_N').jqxChart(CreateSetting("Maтериал N", "", "N"));
         $('#jqxChart_Nuc').jqxChart(CreateSetting("Maтериал Nuc", "", "Nuc"));
 
-       
-        function Update()
+      
+
+
+        var lastDate = "none";
+
+        var lock_update = false;
+
+
+        function UpdateCharts()
         {
+            lock_update = true;
+
             function Reset(l)
-            {
-                $("#M"+l+"_Real").find('span').remove();
-                $("#M"+l+"_Set").find('span').remove();
-                $("#M" + l + "_ErrAbs").find('span').remove();
-                $("#M" + l + "_ErrPrc").find('span').remove();
-            }
-
-            function Set(l, r, s, e, p)
-            { 
-
-                $("#M" + l + "_Real").append("<span>" + r + "</span>");
-                $("#M" + l + "_Set").append("<span>" + s + "</span>");
-                $("#M" + l + "_ErrAbs").append("<span>" + e + "</span>");
-                $("#M" + l + "_ErrPrc").append("<span>" + p + "</span>");
-
-            }
-
-            var casting_begin = "";
-            var data_last = "";
-
-
-            dataAdapters.forEach(function (item, key, mapObj) {
-                Reset(key);
-                if (item != null)
-                    if (item.getrecords().length > 0)
-                    {
-                        var last = item.getrecords()[item.getrecords().length - 1];
-                        Set(key, last.R, last.S, last.E,last.P);
+                   {
+                       $("#M"+l+"_Real").find('span').remove();
+                       $("#M"+l+"_Set").find('span').remove();
+                       $("#M" + l + "_ErrAbs").find('span').remove();
+                       $("#M" + l + "_ErrPrc").find('span').remove();
                     }
-               
-            });
 
-            //if (dataAdapter.getrecords().length > 0)
-            {
-                //var last = dataAdapter.getrecords()[dataAdapter.getrecords().length - 1];
-                //var CastingSession = "";
-               // var RecordTime = last.D;
-           
-                //casting_begin = $.jqx.dataFormat.formatdate(TransalteTime(CastingSession), "dd-MM-yyyy HH:mm:ss", 'en-us');
-                //data_last = $.jqx.dataFormat.formatdate(TransalteTime(RecordTime), "dd-MM-yyyy HH:mm:ss", 'en-us');
-            }
-            $("#casting_begin").find('span').remove();
-            $("#casting_begin").append("<span>"+casting_begin+"</span>");
-            $("#data_last").find('span').remove();
-            $("#data_last").append("<span>" + data_last + "</span>");
-     
-        }
-        //Update();
+                    function Set(l, r, s, e, p)
+                    { 
 
-     
-        var next = new Map();
+                        $("#M" + l + "_Real").append("<span>" + r + "</span>");
+                        $("#M" + l + "_Set").append("<span>" + s + "</span>");
+                        $("#M" + l + "_ErrAbs").append("<span>" + e + "</span>");
+                        $("#M" + l + "_ErrPrc").append("<span>" + p + "</span>");
+                    }
 
-        function UpdateChart(Symbol)
-        {
-            next.set(Symbol,false);
-
-            var lastDate = null;
             var start = new Date();
-            if (dataLocalAdapters.get(Symbol).length > 0)
-            {
-                var _lastDate = dataLocalAdapters.get(Symbol)[dataLocalAdapters.get(Symbol).length - 1].D;     
-                lastDate = $.jqx.dataFormat.formatdate(_lastDate, "dd-MM-yyyy HH:mm:ss", 'en-us');
-           
-            }
-
-            var data = new $.jqx.dataAdapter(CreateSource(Symbol, lastDate),
+ 
+            var data = new $.jqx.dataAdapter(CreateSource( lastDate,100),
              {
                  loadComplete: function (records) {
 
-                    
+                     var _lastDate;
                      for (var i = 0; i < data.getrecords().length; i++) {
                          var last = data.getrecords()[i];
                          var _date = new Date(Date.parse(last.D));
 
-                         dataLocalAdapters.get(Symbol).push({ D: _date, S: last.S, R: last.R, E: last.E, P: last.P });
+                         if (_lastDate == null) _lastDate = _date;
+                         else if (_lastDate < _date) _lastDate = _date;
+
+                         dataLocalAdapters.get(last.L).push({ D: _date, S: last.S, R: last.R, E: last.E, P: last.P });
                      }
 
-                     if (dataLocalAdapters.get(Symbol).length > 100) {
-                         dataLocalAdapters.get(Symbol).splice(0, dataLocalAdapters.get(Symbol).length - 100);
+                     if (_lastDate!=null) {                        
+                         lastDate = $.jqx.dataFormat.formatdate(_lastDate, "dd-MM-yyyy HH:mm:ss", 'en-us');
                      }
 
-                     $('#jqxChart_' + Symbol).jqxChart('update');
+                     dataLocalAdapters.forEach(function (item, key, mapObj) {
 
-                     $('#jqxChart_' + Symbol).jqxChart('getInstance').
-                         description = "L: " + lastDate +
-                         ",Update count = " + data.getrecords().length +
-                         ",Eclape time = " + (new Date() - start) + " ms";
-                     next.set(Symbol, true);
+                         if (dataLocalAdapters.get(key).length > 100) {
+                             dataLocalAdapters.get(key).splice(0, dataLocalAdapters.get(key).length - 100);
+                         }
+
+                         $('#jqxChart_' + key).jqxChart('update');
+
+                         $('#jqxChart_' + key).jqxChart('getInstance').
+                             description = "L: " + lastDate +
+                             ",Update count = " + data.getrecords().length +
+                             ",Eclape time = " + (new Date() - start) + " ms";
+
+                         Reset(key);
+                         if (dataLocalAdapters.get(key).length > 0)
+                         {
+                             var _lastvalue = dataLocalAdapters.get(key)[dataLocalAdapters.get(key).length-1];
+                             Set(key, _lastvalue.R, _lastvalue.S, _lastvalue.E,_lastvalue.P);
+                         }
+
+                        
+
+                     });
+                    lock_update = false;
                  }
+                
              });
-           
-            
+                     
             data.dataBind();
-        }
+        } UpdateCharts();
 
         
         var ttimer = setTimeout(function () {
-            if (next.get("A") == null || next.get("A")) UpdateChart("A");
-            if (next.get("B") == null || next.get("B")) UpdateChart("B");
-            if (next.get("C") == null || next.get("C")) UpdateChart("C");
-            if (next.get("D") == null || next.get("D")) UpdateChart("D");
-            if (next.get("E") == null || next.get("E")) UpdateChart("E");
-            if (next.get("F") == null || next.get("F")) UpdateChart("F");
-            if (next.get("N") == null || next.get("N")) UpdateChart("N");
-            if (next.get("Nuc") == null || next.get("Nuc")) UpdateChart("Nuc");
-            
-
-            //UpdateChart("A");
-            //UpdateChart("B");
-            //  UpdateChart("C"); UpdateChart("D");
-            //  UpdateChart("E"); UpdateChart("F");
-            //  UpdateChart("N"); UpdateChart("Nuc");
-              setTimeout(arguments.callee, 5000);
-            //Update();
-        }, 5000);
+            if (lock_update) UpdateCharts();
+            setTimeout(arguments.callee, 5000);
+           }, 5000);
       
 
     </script>
