@@ -121,6 +121,7 @@ namespace ProfholodSite.DataAcquisition
         public void CopyFrom(CastingProccessTable c)
         {
             RecordTime = c.RecordTime;
+            CastingSessionId=c.CastingSessionId;
             setMeterialA= c.setMeterialA; realMeterialA = c.realMeterialA; errorMeterialA = c.errorMeterialA;
             setMeterialB = c.setMeterialB; realMeterialB = c.realMeterialB; errorMeterialB = c.errorMeterialB;
             setMeterialC = c.setMeterialC; realMeterialC = c.realMeterialC; errorMeterialC = c.errorMeterialC;

@@ -263,6 +263,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\fsystem.pubxml" />
     <None Include="Properties\PublishProfiles\profholod %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\profholod %283%29.pubxml">
       <SubType>Designer</SubType>

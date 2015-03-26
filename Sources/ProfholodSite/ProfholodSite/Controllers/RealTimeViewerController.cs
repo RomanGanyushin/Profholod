@@ -34,13 +34,17 @@ namespace ProfholodSite.Controllers
 
         public string _c(DateTime s)
         {
-            return s.Month.ToString() + "/" + s.Day.ToString() + "/" + s.Year.ToString() +
-                " " + s.Hour.ToString() + ":" + s.Minute.ToString() + ":" + s.Second.ToString();
+            return s.Month.ToString("00") + "/" + s.Day.ToString("00") + "/" + s.Year.ToString() +
+                " " + s.Hour.ToString("00") + ":" + s.Minute.ToString("00") + ":" + s.Second.ToString("00");
         }
+
+
+
         public JsonResult GetDataJson(string LastDate, int LastCount)
         {
-            List <Material>    Result = new List<Material>();      
-            
+           
+            List <Material>    Result = new List<Material>();
+            if (LastCount == 0) LastCount = Int32.MaxValue;
 
             DateTime FromDateTime = new DateTime(2014, 1, 1, 0, 0, 0);
             if (LastDate != "none")
@@ -50,8 +54,9 @@ namespace ProfholodSite.Controllers
             }
 
             var castingProccess = db.CastingProccess.
-                Where(m => m.RecordTime > FromDateTime).OrderByDescending(m => m.RecordTime).
-                Take(LastCount).OrderBy(m => m.RecordTime).ToList();
+                Where(m => m.RecordTime > FromDateTime).
+                OrderByDescending(m => m.RecordTime).Take(LastCount).
+                OrderBy(m => m.RecordTime).ToList();
 
             foreach (var m in castingProccess)
             {
@@ -84,6 +89,31 @@ namespace ProfholodSite.Controllers
                 
             }
 
+            return Json(Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetLastDataInfo()
+        {
+            var castingProccess = db.CastingProccess.OrderBy(m => m.RecordTime).ToList();
+    
+            if (castingProccess.Count() == 0)
+            {
+                return Json(new { isEmptyCastingTable = true }, JsonRequestBehavior.AllowGet);
+            }
+
+            var lRecord = castingProccess.Last();
+            var CastingSession = db.CastingSessions.Where(m => m.OpenSessionDateTime == lRecord.CastingSessionId).ToList();
+
+            var Result = new { 
+                isEmptyCastingTable = false,
+                lastRecordDate = _c(lRecord.RecordTime),
+                castingStart = _c(lRecord.CastingSessionId),
+                castingEnd = (CastingSession.Count() == 0) ? "" :
+                    ((CastingSession.Last().CloseSessionCode == -1) ? "идет заливка ..." : _c(CastingSession.Last().CloseSessionDateTime))
+
+            };
+
+  
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Index()

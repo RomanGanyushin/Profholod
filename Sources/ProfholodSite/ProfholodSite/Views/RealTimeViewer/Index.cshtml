@@ -5,14 +5,20 @@
 
 <br />
 
-<h4>
-    <table style="width:50%">
-        <tr><td><em><font color="blue">Скорость пресса:</font></em></td> <td>- - -</td></tr>
-        <tr><td><em><font color="blue">Начало заливки:</font></em></td> <td><div id="casting_begin"><span></span></div></td></tr>
-        <tr><td><em><font color="blue">Последние данные:</font></em></td> <td><div id="data_last"><span></span></div></td></tr>
-    </table>
-</h4>
 <div id="OnLineButton"></div>
+<td><div style='margin-left: 20px;' id='WindowTimeSettting'> </div></td>
+
+<h4>
+    <center>
+        <table style="width: 40%; border: #999999 1px solid; ">
+            <tr><td><em><font color="blue">Скорость пресса:</font></em></td> <td>- - -</td></tr>
+            <tr><td><em><font color="blue">Начало заливки:</font></em></td> <td><div id="casting_begin"><span></span></div></td></tr>
+            <tr><td><em><font color="blue">Окончание заливки:</font></em></td> <td><div id="casting_end"><span></span></div></td></tr>
+            <tr><td><em><font color="blue">Последние данные:</font></em></td> <td><div id="data_last"><span></span></div></td></tr>
+        </table>
+     </center>
+</h4>
+
 
     <table style="width:100%">
         <tr>
@@ -141,206 +147,272 @@
     </table>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare chart data as an array
+            function CreateSource(lastDate, LastCount) {
+                var source =
+                    {
+                        dataType: "json",
+                        async: true,
+                        dataFields: [
+                            { name: 'D' },
+                            { name: 'R' },
+                            { name: 'S' },
+                            { name: 'E' },
+                            { name: 'P' },
+                            { name: 'L' }
+                        ],
 
-     
-        // prepare chart data as an array
-        function CreateSource(lastDate, LastCount) {
-            var source =
-                {
-                    dataType: "json",
-                    async: true,
-                    dataFields: [
-                        { name: 'D'},
-                        { name: 'R'},
-                        { name: 'S'},
-                        { name: 'E'},
-                        { name: 'P'},
-                        { name: 'L'}
-                    ],
-                
-                    url: 'GetDataJson' + "?LastDate=" + lastDate + "&LastCount=" + LastCount
-                };
-            return source;
-        }
+                        // url: 'RealTimeViewer/GetDataJson' + "?LastDate=" + lastDate 
+                        url: '@Url.Action("GetDataJson", "RealTimeViewer")' + "?LastDate=" + lastDate + "&LastCount="+LastCount
+                    };
+                return source;
+            }
+            //+ "&LastCount=" + LastCount
 
-       
-        var dataLocalAdapters = new Map();
+            var dataLocalAdapters = new Map();
 
-        // prepare jqxChart settings
-        function CreateSetting(Title, Description, CodeSymbol) {
+            // prepare jqxChart settings
+            function CreateSetting(Title, Description, CodeSymbol) {
 
-            dataLocalAdapters.set(CodeSymbol, []);
+                dataLocalAdapters.set(CodeSymbol, []);
 
-            var settings = {
+                var settings = {
 
-                title: Title,
+                    title: Title,
 
-                description: Description,
+                    description: Description,
 
-                enableAnimations: false,
+                    enableAnimations: false,
 
-                enableCrosshairs: false,
+                    enableCrosshairs: false,
 
-                showLegend: true,
+                    showLegend: true,
 
-                padding: { left: 5, top: 5, right: 40, bottom: 5 },
+                    padding: { left: 5, top: 5, right: 40, bottom: 5 },
 
-                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                    titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
 
-                source: dataLocalAdapters.get(CodeSymbol),
+                    source: dataLocalAdapters.get(CodeSymbol),
 
-                xAxis:
+                    xAxis:
 
-                {
+                    {
 
-                    dataField: 'D',
-                    type: 'date',
-                    baseUnit: 'second',
-                    flip: false,
-                    gridLines: { visible: true },
-                    showToolTips: false,
+                        dataField: 'D',
+                        type: 'date',
+                        baseUnit: 'second',
+                        flip: false,
+                        gridLines: { visible: true },
+                        showToolTips: false,
 
-                    formatFunction: function (value) {
-                       return $.jqx.dataFormat.formatdate(value, "HH:mm:ss", 'en-us');
+                        formatFunction: function (value) {
+                            return $.jqx.dataFormat.formatdate(value, "HH:mm:ss", 'en-us');
 
-                    }
-
-                },
-                
-               // colorScheme: 'scheme02',
-
-                seriesGroups:
-
-                    [
-
-                          {
-                              type: 'line',
-
-                              valueAxis:
-                                {
-                                    visible: true,
-                                    position: 'right'                             
-                                },
-                              series: [{ dataField: 'P', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1, lineColor: 'red', lineColorSelected: 'red', fillColor: 'red' }],                           
-
-                          },
-                        {
-
-                            type: 'line',
-
-                            series: [
-                                  { dataField: 'R', displayText: 'Фактическое', opacity: 0.7, lineWidth: 1, lineColor: 'green', lineColorSelected: 'green', fillColor: 'green' },
-                                  { dataField: 'S', displayText: 'Установленное', opacity: 1, lineWidth: 2, lineColor: 'yellow', lineColorSelected: 'yellow', fillColor: 'yellow' },
-                            ]
                         }
-                    ]
+
+                    },
+
+                    // colorScheme: 'scheme02',
+
+                    seriesGroups:
+
+                        [
+
+                              {
+                                  type: 'line',
+
+                                  valueAxis:
+                                    {
+                                        visible: true,
+                                        position: 'right'
+                                    },
+                                  series: [{ dataField: 'P', displayText: 'Ошибка (%)', opacity: 0.7, lineWidth: 1, lineColor: 'red', lineColorSelected: 'red', fillColor: 'red' }],
+
+                              },
+                            {
+
+                                type: 'line',
+
+                                series: [
+                                      { dataField: 'R', displayText: 'Фактическое', opacity: 0.7, lineWidth: 1, lineColor: 'green', lineColorSelected: 'green', fillColor: 'green' },
+                                      { dataField: 'S', displayText: 'Установленное', opacity: 1, lineWidth: 2, lineColor: 'yellow', lineColorSelected: 'yellow', fillColor: 'yellow' },
+                                ]
+                            }
+                        ]
+
+                };
+
+                return settings;
+            }
+
+
+            // setup the chart
+            var settings =
+            {
+                window_time: 100,
+                lastDate: "none",
+                repeat: true,
+                repaet_time_ms: 5000
 
             };
 
-            return settings;
-        }
+
+            $('#OnLineButton').jqxSwitchButton({ height: '40px', width: '150px', checked: true, onLabel: 'Онлайн', offLabel: 'Оффлайн' });
+            $('#OnLineButton').on('checked', function (event) {
+                settings.repeat = false;
+            });
+            $('#OnLineButton').on('unchecked', function (event) {
+                settings.repeat = true;
+                UpdateCharts();
+            });
+
+            $("#WindowTimeSettting").jqxDropDownList({ source: ["Последние 10 сек", "Последние 100 сек", "Последние 500 сек", "Последние 1000 сек"], selectedIndex: 1, width: 'auto' });
+            $('#WindowTimeSettting').on('select', function (event) {
+                var index = event.args.index;
+                switch (index)
+                {
+                    case 0:
+                        settings.window_time = 10;
+                        settings.repaet_time_ms = 1000;
+                    break;
+
+                    case 1:
+                        settings.window_time = 100;
+                        settings.repaet_time_ms = 5000;
+                        break;
+
+                    case 2:
+                        settings.window_time = 500;
+                        settings.repaet_time_ms = 10000;
+                        break;
+
+                    case 3:
+                        settings.window_time = 1000;
+                        settings.repaet_time_ms = 10000;
+                        break;    
+                }
+                settings.lastDate = "none";
+
+                dataLocalAdapters.forEach(function (item, key, mapObj) {
+                    dataLocalAdapters.get(key).splice(0, dataLocalAdapters.get(key).length);
+                });
+                if (!settings.repeat)
+                    UpdateCharts();
+            });
 
 
-        // setup the chart
-        $('#OnLineButton').jqxSwitchButton({ height: '40px', width: '150px', checked: true, onLabel: 'Онлайн', offLabel: 'Оффлайн' });
-
-        $('#jqxChart_A').jqxChart(CreateSetting("Maтериал A", "", "A"));
-        $('#jqxChart_B').jqxChart(CreateSetting("Maтериал B", "", "B"));
-        $('#jqxChart_C').jqxChart(CreateSetting("Maтериал C", "", "C"));
-        $('#jqxChart_D').jqxChart(CreateSetting("Maтериал D", "", "D"));
-        $('#jqxChart_E').jqxChart(CreateSetting("Maтериал E", "", "E"));
-        $('#jqxChart_F').jqxChart(CreateSetting("Maтериал F", "", "F"));
-        $('#jqxChart_N').jqxChart(CreateSetting("Maтериал N", "", "N"));
-        $('#jqxChart_Nuc').jqxChart(CreateSetting("Maтериал Nuc", "", "Nuc"));
-
-      
+            $('#jqxChart_A').jqxChart(CreateSetting("Maтериал A", "", "A"));
+            $('#jqxChart_B').jqxChart(CreateSetting("Maтериал B", "", "B"));
+            $('#jqxChart_C').jqxChart(CreateSetting("Maтериал C", "", "C"));
+            $('#jqxChart_D').jqxChart(CreateSetting("Maтериал D", "", "D"));
+            $('#jqxChart_E').jqxChart(CreateSetting("Maтериал E", "", "E"));
+            $('#jqxChart_F').jqxChart(CreateSetting("Maтериал F", "", "F"));
+            $('#jqxChart_N').jqxChart(CreateSetting("Maтериал N", "", "N"));
+            $('#jqxChart_Nuc').jqxChart(CreateSetting("Maтериал Nuc", "", "Nuc"));
 
 
-        var lastDate = "none";
+            function UpdateCharts() {
+        
+                function Reset(l) {
+                    $("#M" + l + "_Real").find('span').remove();
+                    $("#M" + l + "_Set").find('span').remove();
+                    $("#M" + l + "_ErrAbs").find('span').remove();
+                    $("#M" + l + "_ErrPrc").find('span').remove();
+                }
 
-        var lock_update = false;
+                function Set(l, r, s, e, p) {
 
+                    $("#M" + l + "_Real").append("<span>" + r + "</span>");
+                    $("#M" + l + "_Set").append("<span>" + s + "</span>");
+                    $("#M" + l + "_ErrAbs").append("<span>" + e + "</span>");
+                    $("#M" + l + "_ErrPrc").append("<span>" + p + "</span>");
+                }
 
-        function UpdateCharts()
-        {
-            lock_update = true;
+                var start = new Date();
+                var source = CreateSource(settings.lastDate, settings.window_time);
 
-            function Reset(l)
-                   {
-                       $("#M"+l+"_Real").find('span').remove();
-                       $("#M"+l+"_Set").find('span').remove();
-                       $("#M" + l + "_ErrAbs").find('span').remove();
-                       $("#M" + l + "_ErrPrc").find('span').remove();
-                    }
+                var data = new $.jqx.dataAdapter(source,
+                 {
+                     loadError: function (jqXHR, status, error) {
 
-                    function Set(l, r, s, e, p)
-                    { 
+                     },
+                     loadComplete: function (records) {
+                         var _lastDate;
+                         for (var i = 0; i < data.getrecords().length; i++) {
+                             var last = data.getrecords()[i];
+                             var _date = new Date(Date.parse(last.D));
 
-                        $("#M" + l + "_Real").append("<span>" + r + "</span>");
-                        $("#M" + l + "_Set").append("<span>" + s + "</span>");
-                        $("#M" + l + "_ErrAbs").append("<span>" + e + "</span>");
-                        $("#M" + l + "_ErrPrc").append("<span>" + p + "</span>");
-                    }
+                             if (_lastDate == null) _lastDate = _date;
+                             else if (_lastDate < _date) _lastDate = _date;
 
-            var start = new Date();
- 
-            var data = new $.jqx.dataAdapter(CreateSource( lastDate,100),
-             {
-                 loadComplete: function (records) {
-
-                     var _lastDate;
-                     for (var i = 0; i < data.getrecords().length; i++) {
-                         var last = data.getrecords()[i];
-                         var _date = new Date(Date.parse(last.D));
-
-                         if (_lastDate == null) _lastDate = _date;
-                         else if (_lastDate < _date) _lastDate = _date;
-
-                         dataLocalAdapters.get(last.L).push({ D: _date, S: last.S, R: last.R, E: last.E, P: last.P });
-                     }
-
-                     if (_lastDate!=null) {                        
-                         lastDate = $.jqx.dataFormat.formatdate(_lastDate, "dd-MM-yyyy HH:mm:ss", 'en-us');
-                     }
-
-                     dataLocalAdapters.forEach(function (item, key, mapObj) {
-
-                         if (dataLocalAdapters.get(key).length > 100) {
-                             dataLocalAdapters.get(key).splice(0, dataLocalAdapters.get(key).length - 100);
+                             dataLocalAdapters.get(last.L).push({ D: _date, S: last.S, R: last.R, E: last.E, P: last.P });
                          }
 
-                         $('#jqxChart_' + key).jqxChart('update');
-
-                         $('#jqxChart_' + key).jqxChart('getInstance').
-                             description = "L: " + lastDate +
-                             ",Update count = " + data.getrecords().length +
-                             ",Eclape time = " + (new Date() - start) + " ms";
-
-                         Reset(key);
-                         if (dataLocalAdapters.get(key).length > 0)
-                         {
-                             var _lastvalue = dataLocalAdapters.get(key)[dataLocalAdapters.get(key).length-1];
-                             Set(key, _lastvalue.R, _lastvalue.S, _lastvalue.E,_lastvalue.P);
+                         if (_lastDate != null) {
+                             settings.lastDate = $.jqx.dataFormat.formatdate(_lastDate, "dd-MM-yyyy HH:mm:ss", 'en-us');
                          }
 
+                         dataLocalAdapters.forEach(function (item, key, mapObj) {
+
+                             if (dataLocalAdapters.get(key).length > settings.window_time) {
+                                 dataLocalAdapters.get(key).splice(0, dataLocalAdapters.get(key).length - settings.window_time);
+                             }
+
+                              $('#jqxChart_' + key).jqxChart('update');
+                             
+                            
+
+                             $('#jqxChart_' + key).jqxChart('getInstance').
+                                 description = "L: " + settings.lastDate +
+                                 ",Update count = " + data.getrecords().length +
+                                 ",Eclape time = " + (new Date() - start) + " ms";
+
+                             Reset(key);
+                             if (dataLocalAdapters.get(key).length > 0) {
+                                 var _lastvalue = dataLocalAdapters.get(key)[dataLocalAdapters.get(key).length - 1];
+                                 Set(key, _lastvalue.R, _lastvalue.S, _lastvalue.E, _lastvalue.P);
+                             }
+
+                         });
+
+
+                         $("#casting_begin").find('span').remove();
+                         $("#casting_end").find('span').remove();
+                         $("#data_last").find('span').remove();
+                         
+                         $.ajax({
+                             url: '@Url.Action("GetLastDataInfo", "RealTimeViewer")',
+                             async: true,
+                             cache: false,
+                             success: function (data) {
+                                 if (!data.isEmptyCastingTable) {
+                                     $("#casting_begin").append("<span>" + data.castingStart + "</span>");
+                                     $("#casting_end").append("<span>" + data.castingEnd + "</span>");
+                                     $("#data_last").append("<span>" + data.lastRecordDate + "</span>");
+                                 }
+                                
+                             }
+                         });
                         
 
-                     });
-                    lock_update = false;
-                 }
-                
-             });
-                     
-            data.dataBind();
-        } UpdateCharts();
+                         if (settings.repeat)
+                         {
+                             setTimeout(function () {
+                                 UpdateCharts();
+                             }, settings.repaet_time_ms);
+                         }
 
-        
-        var ttimer = setTimeout(function () {
-            if (lock_update) UpdateCharts();
-            setTimeout(arguments.callee, 5000);
-           }, 5000);
-      
+                     }
 
+                 });
+
+                data.dataBind();
+            }
+
+            UpdateCharts();
+
+        });
     </script>
 
 
