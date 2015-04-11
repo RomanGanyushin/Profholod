@@ -110,6 +110,19 @@ namespace ProfholodSite.Controllers
 
                             }
                             break;
+
+                            case 4:
+                            {
+                                GeneralDoubleBeltSession dataacquisitionsession = new GeneralDoubleBeltSession();
+
+                                dataacquisitionsession.OpenSessionCode = OpenSessionCode;
+                                dataacquisitionsession.CloseSessionDateTime =
+                                 dataacquisitionsession.OpenSessionDateTime = DateTime.Parse(OpenSessionDateTime);
+                                dataacquisitionsession.CloseSessionCode = -1;
+                                db.GeneralDoubleBeltSessions.Add(dataacquisitionsession);
+
+                            }
+                            break;
                             
                         default:
                         throw new SystemException();
@@ -157,14 +170,21 @@ namespace ProfholodSite.Controllers
                         }
                         break;
 
+                        case 4:
+                        {
+                            GeneralDoubleBeltSession dataacquisitionsession = db.GeneralDoubleBeltSessions.Find(DateTime.Parse(OpenSessionDateTime));
+                            return Json((dataacquisitionsession == null) ? "No" : "Yes", JsonRequestBehavior.AllowGet);
+                        }
+                        break;
+
 
                         
 
                     default:
                     throw new SystemException();
                 }
-            }
-            catch (SystemException) { }
+            }                    
+            catch (SystemException e) { }
             return Json("Error", JsonRequestBehavior.AllowGet);
         }
 
@@ -206,6 +226,13 @@ namespace ProfholodSite.Controllers
                         }
                         break;
 
+                         case 4:
+                        {
+                            GeneralDoubleBeltSession dataacquisitionsession = db.GeneralDoubleBeltSessions.Find(DateTime.Parse(OpenSessionDateTime));
+                            if (dataacquisitionsession == null) throw new SystemException();
+                            return Json((dataacquisitionsession.CloseSessionCode == -1) ? "No" : "Yes", JsonRequestBehavior.AllowGet);
+                        }
+                        break;
                         
                         
                     default:
@@ -263,6 +290,18 @@ namespace ProfholodSite.Controllers
                         case 3:
                         {
                             AlarmsSession dataacquisitionsession = db.AlarmsSessions.Find(DateTime.Parse(OpenSessionDateTime));
+                            if (dataacquisitionsession == null) throw new SystemException();
+                            dataacquisitionsession.CloseSessionCode = CloseSessionCode;
+                            dataacquisitionsession.CloseSessionDateTime = DateTime.Parse(CloseSessionDateTime);
+
+                            db.Entry(dataacquisitionsession).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        break;
+
+                        case 4:
+                        {
+                            GeneralDoubleBeltSession dataacquisitionsession = db.GeneralDoubleBeltSessions.Find(DateTime.Parse(OpenSessionDateTime));
                             if (dataacquisitionsession == null) throw new SystemException();
                             dataacquisitionsession.CloseSessionCode = CloseSessionCode;
                             dataacquisitionsession.CloseSessionDateTime = DateTime.Parse(CloseSessionDateTime);
@@ -423,7 +462,61 @@ namespace ProfholodSite.Controllers
             return Json("Error", JsonRequestBehavior.AllowGet);
 
         }
+
+        public JsonResult PutGeneralDoubleBeltRecord(string IdGeneralDoubleBeltSession, string RecordDateTime, string Message)
+        {
+            int Step = 1;
+            try
+            {
+                var js = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var objs = js.Deserialize<Dictionary<string, string>>(Message);
+
+               
+
+                GeneralDoubleBeltProccessTable proc = new GeneralDoubleBeltProccessTable()
+                {
+                    RecordTime = DateTime.Parse(RecordDateTime),
+                    GeneralDoubleBeltSessionId = DateTime.Parse(IdGeneralDoubleBeltSession),
+                    setVelocity = double.Parse(objs["DB_ForPC_S_Vel_DN"].Replace(".", ",")),
+                    realVelocity = double.Parse(objs["DB_ForPC_R_Vel_DN"].Replace(".", ",")),
+                    errorVelocity = double.Parse(objs["ERR_Vel_DN"].Replace(".", ",")),
+
+                };
+
+               Step =2;
+
+                if (db.GeneralDoubleBeltProccess.Count() > 0)
+                {
+                    var _last = db.GeneralDoubleBeltProccess.OrderBy(p => p.RecordTime).ToList().Last();
+                    if (_last.RecordTime >= proc.RecordTime)
+                    {
+                        return Json("Ok", JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                if (db.GeneralDoubleBeltProccess.Count() < 1000)
+                {
+                    db.GeneralDoubleBeltProccess.Add(proc);
+                }
+                else
+                {
+                    var _replace = db.GeneralDoubleBeltProccess.OrderBy(p => p.RecordTime).First();
+                    _replace.CopyFrom(proc);
+                    db.Entry(_replace).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+
+                return Json("Ok", JsonRequestBehavior.AllowGet);
+            }
+
+            catch (SystemException e) { return Json("Error -" + IdGeneralDoubleBeltSession
+                + " ---" + RecordDateTime, JsonRequestBehavior.AllowGet);
+            }
+            return Json("Error", JsonRequestBehavior.AllowGet);
+
+        }
        
+
 
 
         // GET: /DASession/Edit/5

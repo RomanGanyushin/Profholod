@@ -11,15 +11,20 @@ namespace ProfholodSite.Controllers
     {
         private MachineObjectContext db = new MachineObjectContext();
 
+        [Authorize]
         public ActionResult Index()
         {
-           if (User.Identity.Name == "")
-            {
-                return RedirectToAction("Login", "Account" ,routeValues: null);
-            }
-            
             StaffPerson person = db.StaffPersons.Where(p => p.UserName == User.Identity.Name).First();
-                
+               
+            ViewBag.AccessType = person.AccessType;
+            ViewBag.CurrentUser = User.Identity.Name;
+            return View();
+        }
+
+        public ActionResult MaintenaceIndex()
+        {
+            StaffPerson person = db.StaffPersons.Where(p => p.UserName == User.Identity.Name).First();
+
             ViewBag.AccessType = person.AccessType;
             ViewBag.CurrentUser = User.Identity.Name;
             return View();

@@ -47,6 +47,13 @@ namespace ProfholodSite.DataAcquisition
 
     }
 
+     [Table("da.GeneralDoubleBeltSession")]
+     public class GeneralDoubleBeltSession : Session
+     {
+
+     }
+
+
      [Table("da.PLCAlarm")] 
     public class PLCAlarm
     {
@@ -170,6 +177,33 @@ namespace ProfholodSite.DataAcquisition
        }
     }
 
+      [Table("da.GeneralDoubleBeltProccessTable")]
+      public class GeneralDoubleBeltProccessTable
+      {
+          public Int32 Id { get; set; }
+          public DateTime RecordTime { get; set; }
+          public DateTime GeneralDoubleBeltSessionId { get; set; }
+
+          public double setVelocity { get; set; }
+          public double realVelocity { get; set; }
+          public double errorVelocity { get; set; }
+
+
+         virtual public double realVelocity_Percent
+           {
+               get { return (setVelocity == 0) ? 0 : (100.0 * errorVelocity / setVelocity); }
+           }
+          
+          public void CopyFrom(GeneralDoubleBeltProccessTable c)
+          {
+              RecordTime = c.RecordTime;
+              GeneralDoubleBeltSessionId = c.GeneralDoubleBeltSessionId;
+              setVelocity = c.setVelocity;
+              realVelocity = c.realVelocity;
+              errorVelocity = c.errorVelocity;
+           }
+      }
+
     public class DataAcquisitionContext : DbContext
     {
         public DataAcquisitionContext()
@@ -215,9 +249,14 @@ namespace ProfholodSite.DataAcquisition
 
         public DbSet<AlarmsSession> AlarmsSessions { get; set; }
 
+        public DbSet<GeneralDoubleBeltSession> GeneralDoubleBeltSessions { get; set; }
+        
+
         public DbSet<AlarmMessage> AlarmMessages { get; set; }
 
         public DbSet<CastingProccessTable> CastingProccess{ get; set; }
+        public DbSet<GeneralDoubleBeltProccessTable> GeneralDoubleBeltProccess { get; set; }
+        
         
         // Справочники
         public DbSet<PLCAlarm> PLCAlarms { get; set; }

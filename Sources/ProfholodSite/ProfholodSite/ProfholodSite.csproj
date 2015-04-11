@@ -48,6 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OpenPop">
+      <HintPath>..\packages\OpenPop.NET.2.0.6.1102\lib\net40\OpenPop.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -200,6 +203,7 @@
     <Compile Include="Controllers\PeriodicalsController.cs" />
     <Compile Include="Controllers\RealTimeViewerController.cs" />
     <Compile Include="Controllers\ReportsSummaryController.cs" />
+    <Compile Include="Controllers\SupplyClientController.cs" />
     <Compile Include="Controllers\TypeOfFaultsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -211,15 +215,21 @@
     <Compile Include="Models\MaintenaceModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Reports.cs" />
+    <Compile Include="Models\SupplyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\19549543_a30izlr1g6_W665.jpg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\logo.gif" />
+    <Content Include="Content\images\prof_delete_5958.png" />
+    <Content Include="Content\images\prof_edit_1807.png" />
+    <Content Include="Content\images\prof_llists_3455.png" />
+    <Content Include="Content\images\prof_rec_5132.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -684,7 +694,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\MaintenaceIndex.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
@@ -779,7 +789,11 @@
     <Content Include="Views\FileSystem\Index.cshtml" />
     <Content Include="Views\FileSystem\Upload.cshtml" />
     <Content Include="Views\ReportsSummary\ReportMaintanace.cshtml" />
+    <Content Include="Views\RealTimeViewer\MatOnlineIndex.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\RealTimeViewer\Index.cshtml" />
+    <Content Include="Views\RealTimeViewer\DBVelocityOnlineIndex.cshtml" />
+    <Content Include="Views\SupplyClient\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

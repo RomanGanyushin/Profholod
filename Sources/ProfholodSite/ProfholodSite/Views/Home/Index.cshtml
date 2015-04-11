@@ -1,86 +1,32 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-
-<div id="tabs">
-
-    <ul>
-        
-
-        @if (ViewBag.AccessType == "Administrator" || ViewBag.AccessType == "Chef")
-        {
-            <li><a href="#tabs-1">Регламентные работы</a></li>
-            <li><a href="#tabs-2">На утверждение</a></li>
-            <li><a href="#tabs-3">Формировать задание</a></li>
-            <li><a href="#tabs-4">Отчеты</a></li>
-            <li><a href="#tabs-5">Документы</a></li>
-}
-else
-{
-            <li><a href="#tabs-2">Дополнительно</a></li>
-            <li><a href="#tabs-3">Отчеты</a></li>
+﻿
+@{
+    ViewBag.Title = "Index";
 }
 
 
-
-
-    </ul>
-
-
-
-    <div id="tabs-1">
-        <li>@Html.ActionLink("Показать список предстоящих регламентных работ на ближайшие 7 дней", "Index", "MaintenacePreviewer")</li>
-        <li>@Html.ActionLink("Создать отчет по выполненной  регламентной работе", "Create", "PerformMaintenanceReports")</li>
-        <li>@Html.ActionLink("Показать список выполненных регламентных работ (не утвержденных)", "Index", "PerformMaintenanceReports")</li>
-    </div>
-
-
-    @if (ViewBag.AccessType == "Administrator" || ViewBag.AccessType == "Chef")
-    {
-        <div id="tabs-2">
-            <li>@Html.ActionLink("Утведить регулярные регламентные работы", "ConfirmRegular", "MaintenacesObjects")</li>
-            <li>@Html.ActionLink("Утведить разовые работы", "ConfirmOnce", "MaintenacesObjects")</li>
-            <li>@Html.ActionLink("Утвердить список выполненных регламентных работ", "Index", "ConfirmPerformMaintenance")</li>
-        </div>
-
-        <div id="tabs-3">
-            <li>@Html.ActionLink("Формировать разовое задание на сервисную работу", "Create", "MaintenacesSpecial")</li>
-        </div>
-
-        <div id="tabs-4">
-            <li>@Html.ActionLink("Черновик отчета", "Index", "PerformNoteRepairs")</li>
-            <li>@Html.ActionLink("Отчет о работе", "Index", "ComplitedRepairReports")</li>
-        </div>
-        
-         <div id="tabs-5">
-            <li>@Html.ActionLink("Общий отчет о выпоненных работах", "Index", "ReportsSummary")</li> 
-        </div>
-}
-else
-{
-        <div id="tabs-2">
-            <li>@Html.ActionLink("Формировать разовое задание на сервисную работу", "Create", "MaintenacesSpecial")</li>
-        </div>
-
-        <div id="tabs-3">
-            <li>@Html.ActionLink("Черновик отчета", "Index", "PerformNoteRepairs")</li>
-            <li>@Html.ActionLink("Отчет о работе", "Index", "ComplitedRepairReports")</li>
-        </div>
-}
-
-
-
-</div>
-
-
-<script type="text/javascript">
-
-            $(function () {
-                $("#tabs").tabs();
-            });
-</script>
-
-
-
-
-
+<h1>
+        <table style="width: 100%; border: #999999 2px solid; ">
+            <tr>
+                <td>
+                    <em>
+                        <font color="blue">
+                            <img src="~/Content/images/19549543_a30izlr1g6_W665.jpg" />
+                        </font>
+                    </em>
+                </td>
+            
+                <td>
+                    <em>
+                        <font color="blue">
+                             
+                            <li>@Html.ActionLink("Обслуживание - ППР", "MaintenaceIndex", "Home")</li>
+                            <li>@Html.ActionLink("Ремонтные работы", "MaintenaceIndex", "Home")</li>
+                            <li>@Html.ActionLink("Документы и отчеты", "Index", "ReportsSummary")</li>
+                            <li>@Html.ActionLink("Онлайн визирование", "Index", "RealTimeViewer")</li>
+                            <li>@Html.ActionLink("Статистика", "MaintenaceIndex", "Home")</li>
+                            
+                         </font>
+                    </em>
+                </td>
+</table>
+</h1>
