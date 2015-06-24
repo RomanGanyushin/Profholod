@@ -14,6 +14,7 @@ using ProfholodSite.SupplyModel;
 
 namespace ProfholodSite.Controllers
 {
+    [Authorize]
     public class SupplyClientController : Controller
     {
         private SupplyModelContext db = new SupplyModelContext();
@@ -34,7 +35,7 @@ namespace ProfholodSite.Controllers
 
       public JsonResult GetDataJson_DB()
         {
-            List<Position> Result = db.Positions.OrderByDescending(m=>m.OpenDateTime).ToList();
+            List<Position> Result = db.Positions.Where(m=>m.StateId<=5).OrderByDescending(m=>m.OpenDateTime).ToList();
             return Json(Result, JsonRequestBehavior.AllowGet);
         }
 
@@ -284,7 +285,64 @@ namespace ProfholodSite.Controllers
           return Json(new { Error = "Не удалось отредактировать запись" }, JsonRequestBehavior.AllowGet);
       }
 
+      public JsonResult DeleteRecordOrGroup(int Id)
+      {
+          if (User.Identity.Name == "")
+              return Json(new { Error = "Нет прав на редактирование записи" }, JsonRequestBehavior.AllowGet);
+
+          var currentDateTime = new MDTime().GetCurrentTime();
+
+          try
+          {
+              Position edit_record = db.Positions.Find(Id);
+              edit_record.ModifyDateTime = currentDateTime;
+              edit_record.StateId = 6; // Удален
+              db.Entry(edit_record).State = EntityState.Modified;
+
+              List<Position> childs =
+                  db.Positions.Where(m => m.PositionGroupId == Id).ToList();
+              foreach (var i in childs)
+              {
+                  i.StateId = 6;
+                  db.Entry(i).State = EntityState.Modified;
+              }
+              
+              db.SaveChanges();
+
+              return Json(edit_record, JsonRequestBehavior.AllowGet);
+
+          }
+          catch (SystemException e) { }
+          return Json(new { Error = "Не удалось выполнить удаление" }, JsonRequestBehavior.AllowGet);
+  
+      }
+
+      public Array BuildInfoStructures(int Id)
+      {
+          try
+          {
+              Position edit_record = db.Positions.Find(Id);
+
+              //var result;
+              object[] result = new object[1] ;
+              object[]  desc = new object[2]; 
+                desc[0] = new { label = "Подпозиция1" };
+                desc[1] = new { label = "Подпозиция1" };
+
+              result[0] = new{ label = "Описание позиции",  expanded= true,items = desc} ;
+
+              return result;
+
+          }
+          catch (SystemException e) { }
+          return null;
+
+      }
 
     }
 
+    
+
 }
+
+

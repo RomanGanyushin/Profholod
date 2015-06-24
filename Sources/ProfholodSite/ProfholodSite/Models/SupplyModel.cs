@@ -121,6 +121,8 @@ namespace ProfholodSite.SupplyModel
                 States.Add(new State() { Id = 3, Caption = "Заморожен" });
                 States.Add(new State() { Id = 4, Caption = "Отменен" });
                 States.Add(new State() { Id = 5, Caption = "Групповой" });
+                States.Add(new State() { Id = 6, Caption = "Удален" });
+                States.Add(new State() { Id = 7, Caption = "Архив" });
 
             }
 
