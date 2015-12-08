@@ -16,11 +16,6 @@
 
 using boost::asio::ip::tcp;
 
-struct Привет
-{
-
-};
-
 class session
 {
 public:
