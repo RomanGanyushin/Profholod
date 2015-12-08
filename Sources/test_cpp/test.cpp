@@ -1,4 +1,4 @@
-//
+п»ї//
 // async_tcp_echo_server.cpp
 // ~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -16,7 +16,7 @@
 
 using boost::asio::ip::tcp;
 
-struct Привет
+struct РџСЂРёРІРµС‚
 {
 
 };
