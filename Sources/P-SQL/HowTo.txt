@@ -1,0 +1,42 @@
+IP Сервера : 93.188.161.121
+
+
+
+Перезагрузка сервера:
+ sudo /etc/init.d/postgresql restart 
+
+
+Настройка MVC под сервер
+
+Install-Package EntityFramework
+Install-Package Npgsql.EntityFramework
+
+2. Update web.config 
+
+  <system.data>
+    <DbProviderFactories>
+      <remove invariant="Npgsql" />
+      <add name="Npgsql Data Provider" invariant="Npgsql" support="FF" description=".Net Framework Data Provider for Postgresql" type="Npgsql.NpgsqlFactory, Npgsql" />
+    </DbProviderFactories>
+  </system.data>
+
+
+
+Ubuntu:
+
+установить boost: sudo apt-get install libboost-all-dev
+
+Компиляция:
+g++ -std=c++0x test1.cpp -o test1 -lboost_system
+
+Репозиторий:
+git clone https://github.com/RomanGanyushin/Profholod.git
+git pull
+
+/// Настройки сервера:
+
+1. git clone https://github.com/RomanGanyushin/UbuntuServer.git
+2. apt-get install xrdp
+3. apt-get install mono-complete
+4. apt-get install mono-xsp2
+(запуск сервиса xsp -port=80)
